@@ -1,17 +1,24 @@
 <template>
-  <div id="app">
+  <v-app id="app">
     <TopNav></TopNav>
-    <router-view/>
+     <v-content>
+      <v-container fluid>
+        <router-view></router-view>
+      </v-container>
+    </v-content>
     <Footer></Footer>
-  </div>
+  </v-app>
 </template>
 
 <script>
 
 import TopNav from './components/Header/TopNav.vue';
 import Footer from './components/Footer/Footer.vue';
+import { VContent, VContainer} from 'vuetify/lib'
 export default {
    components: {
+     VContent,
+     VContainer,
     TopNav,
     Footer
   },

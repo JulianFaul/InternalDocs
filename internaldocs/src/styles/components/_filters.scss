@@ -1,0 +1,17 @@
+.filter-component{
+    margin-bottom: $s-size;
+    background: $white;
+}
+
+button.v-btn.v-btn--flat.theme--light.active {
+    opacity: 1;
+    color: #2196f3;
+    pointer-events: all;
+}
+
+.v-btn{
+    pointer-events: none;
+}
+.v-btn-toggle--selected{
+    box-shadow:none;
+}

@@ -1,0 +1,16 @@
+.button{
+    text-decoration:none;
+    padding: $xs-size;
+    border-radius: 3px;
+}
+
+.button__blue{
+    background: $ndtec-blue;
+    color: $white;
+}
+
+.createproject{
+    position: absolute;
+    top:30px;
+    left:35%;
+}

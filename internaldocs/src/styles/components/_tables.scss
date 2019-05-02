@@ -1,0 +1,101 @@
+.v-data-table{
+    
+    tr {
+        height: 100px;
+    }
+}
+
+.project-name{
+    padding: 0 !important;
+}
+
+.project-name__title{
+    font-weight: bold;
+    font-size: $font-size-small;
+}
+
+table.v-table thead td:not(:nth-child(1)), table.v-table tbody td:not(:nth-child(1)), table.v-table thead th:not(:nth-child(1)), table.v-table tbody th:not(:nth-child(1)), table.v-table thead td:first-child, table.v-table tbody td:first-child, table.v-table thead th:first-child, table.v-table tbody th:first-child{
+    padding: 0 $m-size;
+}
+.project-status{
+    position: relative;
+}
+.project-status__progress {
+    width: 340px;
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+.project-status__status, .project-status__icons{
+    display: flex; 
+    justify-content: space-between;
+    align-items: center;
+    font-size:  $font-size-xsmall;
+
+}
+.project-status__status__item{
+    width: 60px;
+    text-align: left;
+    line-height: 1;
+    padding: 6px 0px;
+}
+
+.project-status__status__item__disabled,.project-version__title__disabled{
+    color: $grey !important;
+    pointer-events: none;
+    text-decoration: none;
+}
+
+.project-version__title__pink{
+    color: #cf2cc2;
+}
+.project-version__title__yellow{
+    color: #ffba3c;
+}
+.project-version__title__blue{
+    color: #061ed3;
+}
+.project-version__title__green{
+    color:#06d314;
+}
+
+.project-status__status__item__active{
+    color: $ndtec-green;
+}
+
+.project-status__icons {
+    position: absolute;
+    top: 14px;
+    width: 361px;
+    z-index: 1;
+}
+.project-status__icons__icon {
+    .v-icon{
+        color: $off-black;
+    }
+}
+
+
+.theme--dark.v-table thead th {
+    background-color: #424242;
+  }
+  
+  .theme--light.v-table thead th {
+    background-color: #ffffff;
+  }
+  
+  
+
+.project-version{
+    display: flex; 
+    justify-content: space-evenly;
+    align-items: center;
+    font-size:  $font-size-xsmall;
+}
+
+.project-version__title{
+    font-size: $font-size-small;
+}
+
+.project-version__date{
+    font-size: $font-size-xsmall;
+}

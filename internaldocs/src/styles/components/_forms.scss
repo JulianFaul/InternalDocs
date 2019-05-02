@@ -1,0 +1,56 @@
+.form{
+    padding: 0 1.6rem;
+}
+.form-section{
+    margin-bottom: $l-size;
+}
+.form-section__title{
+    margin: $s-size 0;
+}
+.form-section__details{
+    padding: 0;
+    margin: 0;
+    -ms-box-orient: horizontal;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    >*{
+        margin: 0px 30px 0px 0px;
+        width: 33.33%;
+    }
+}
+
+.form-section__note{
+    color: red;
+    font-size: $font-size-small;
+}
+
+.form-section__platform{
+    display: block;
+}
+
+.form-section__checkbox{
+    display: inline-block;
+    width: 110px;
+}
+
+.form-section__textfield{
+    display: inline-block;
+    width: 600px;
+}
+.form-section__datepicker{
+    display: inline-block;
+    margin: 0  $l-size;
+    border-bottom: 1px solid #919191;
+    height: 29px;
+    width: 200px;
+    input{
+        cursor: pointer;
+        width: 199px;
+    }
+}
+
+.form-section__radio {
+    margin: 10px 0px;
+    width: 239px;
+}

@@ -5,7 +5,9 @@
 html {
   font-size: 62.5%;
 }
-
+html, body {
+  overflow: hidden;
+}
 body {
   // color: $dark-grey;
   font-family: Helvetica, Arial, sans-serif;
@@ -23,4 +25,14 @@ button:disabled {
 
 .is-active {
   font-weight: bold;
+}
+
+.container{
+  padding: 0px;
+}
+
+.scroll-container {
+  max-width: 100%;
+  height: calc(100vh - 188px);
+  overflow-y: auto;
 }

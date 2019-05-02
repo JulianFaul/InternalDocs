@@ -4,6 +4,7 @@ import HomePage from '../components/HomePage'
 import AdminPage from '../components/Admin/AdminPage'
 import TaskTracker from '../components/TaskTracker/TaskTracker'
 import MobileProjectsPage from '../components/MobileProjects/MobileProjectsPage'
+import CreateMobileProjectPage from '../components/MobileProjects/CreateMobileProjectPage'
 
 Vue.use(Router)
 
@@ -29,9 +30,14 @@ export default new Router({
     },
     {
       path: '/mobileprojects',
-      name: 'mobileprojects',
+      name: 'MobileProjectsPage',
       component: MobileProjectsPage,
     },
+    {
+      path: '/create',
+      name: 'MobileProjectsPageCreate',
+      component: CreateMobileProjectPage,
+    }
 
   ],
   mode: 'history'
