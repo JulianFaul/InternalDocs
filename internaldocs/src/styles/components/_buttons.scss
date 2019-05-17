@@ -2,15 +2,35 @@
     text-decoration:none;
     padding: $xs-size;
     border-radius: 3px;
+    margin: 0 $xs-size;
 }
 
+.button__absolute-right{
+    position: absolute;
+    top: 30px;
+    right: 19%;
+}
+.button:disabled{
+    background:$light-grey;
+}
 .button__blue{
     background: $ndtec-blue;
     color: $white;
 }
+.button__green{
+    background: $ndtec-green;
+    color: $white;
+}
+.button__red-text{
+    color: red !important;
+}
+.button__red{
+    background: red;
+    color: $white;
+}
 
-.createproject{
-    position: absolute;
-    top:30px;
-    left:35%;
+.button__sm-reset{
+    @extend .button__red;
+    padding: 2px 5px;
+    font-size: $font-size-xsmall;
 }

@@ -36,3 +36,9 @@ button:disabled {
   height: calc(100vh - 188px);
   overflow-y: auto;
 }
+
+.scroll-container__tabs {
+  max-width: 100%;
+  height: calc(100vh - 206px);
+  overflow-y: auto;
+}

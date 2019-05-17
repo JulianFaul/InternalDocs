@@ -32,7 +32,7 @@ export default {
             },
             getClass(option){
                 for(var x = 0; x < this.projects.length; x++){
-                   var appFirstLetter = this.projects[x].name.charAt(0).toLowerCase();
+                   var appFirstLetter = this.projects[x].appTitle.charAt(0).toLowerCase();
                    if(option === appFirstLetter){
                      return "active"
                    }

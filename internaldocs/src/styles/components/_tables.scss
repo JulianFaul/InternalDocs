@@ -70,6 +70,9 @@ table.v-table thead td:not(:nth-child(1)), table.v-table tbody td:not(:nth-child
 }
 .project-status__icons__icon {
     .v-icon{
+        color: $grey;
+    }
+    .active{
         color: $off-black;
     }
 }
@@ -98,4 +101,5 @@ table.v-table thead td:not(:nth-child(1)), table.v-table tbody td:not(:nth-child
 
 .project-version__date{
     font-size: $font-size-xsmall;
+    width: 57px;
 }

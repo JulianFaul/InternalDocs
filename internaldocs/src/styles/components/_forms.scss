@@ -1,5 +1,5 @@
 .form{
-    padding: 0 1.6rem;
+    padding: 0 0rem;
 }
 .form-section{
     margin-bottom: $l-size;
@@ -25,13 +25,17 @@
     font-size: $font-size-small;
 }
 
+.form-section__sub{
+    margin-left:20px;
+}
+
 .form-section__platform{
     display: block;
 }
 
 .form-section__checkbox{
     display: inline-block;
-    width: 110px;
+    width: 130px;
 }
 
 .form-section__textfield{
@@ -53,4 +57,11 @@
 .form-section__radio {
     margin: 10px 0px;
     width: 239px;
+}
+
+.file-listing {
+    display: flex;
+    justify-content: space-between;
+    align-content: center;
+    margin-right: 10px;
 }

@@ -1,15 +1,15 @@
 <template>
-<div>
-    <div class='content-container'>
-        <div class='title-container'>
-            <h1 class='title-container__title'>Create New Project</h1>
-        </div>
-    </div>
-    <div class='scroll-container'>
+    <div>
         <div class='content-container'>
-    <MobileProjectForm :buttonText='buttonText' :project='project' @onSubmit="onSubmit"></MobileProjectForm>
+            <div class='title-container'>
+                <h1 class='title-container__title'>Create New Project</h1>
+            </div>
         </div>
-    </div>
+        <div class='scroll-container'>
+            <div class='content-container'>
+                <MobileProjectForm :buttonText='buttonText' :projectData='projectData' @onSubmit="onSubmit"></MobileProjectForm>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -24,28 +24,35 @@ export default {
     data () {
         return {
             buttonText: 'Create Project',
-            project: {
+            projectData: {
+                appTitle: '',
+                appSubtitle: '',
                 appVersion:  '' ,
                 country: '',
                 appType: '',
                 productType: '',
                 priority: '',
-                appLive: '',
-                appDemo: '',
-                appStaging: '',
-                appDevel: '',
+                appLive: false,
+                appDemo: false,
+                appStaging: false,
+                appDevel: false,
                 liveDate: '',
                 demoDate: '',
                 stagingDate: '',
                 develDate: '',
                 milestone: '',
-                appStatus: ''
+                appStatus: '',
+                liveLink: '',
+                demoLink: '',
+                stagingLink: '',
+                develLink: '',
+                icon: '',
             }
         }
     },
     methods: {
         onSubmit(payload) {
-            console.log("create project in db with these values", payload);
+            this.$store.dispatch('createMobileProject', payload);
         }
     }
 }

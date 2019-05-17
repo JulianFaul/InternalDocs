@@ -15,8 +15,17 @@
 .header__title{
     color:$white;
     text-decoration: none;
+    margin-left: 58px;
     img{
         width: 61px;
     }
     
+}
+
+.header__toolbar-icon {
+    position: absolute;
+    top: 15px;
+    
+    z-index: 1000;
+    color: #ffffff !important;
 }
