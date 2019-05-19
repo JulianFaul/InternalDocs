@@ -1,4 +1,5 @@
 const MobileProjectModel = require('../models/MobileProject.model');
+var fs = require('fs');
 
 exports.index = (req,res) => {
         MobileProjectModel.find({},(err, mobileProject) => {
@@ -23,11 +24,8 @@ exports.create = (req, res) => {
         if(!req.body){
             return res.status(400).send('Request body is missing');
         }
-        console.log(req.file)
         const path = require('path')
         const remove = path.join(__dirname, '..', '..', 'public')
-        
-       
         let model = new MobileProjectModel(req.body)
         
         if(req.file){
@@ -133,3 +131,24 @@ exports.update = (req,res) => {
     }
 })     
 };
+
+exports.destroy = (req,res) => {
+    const projectID = req.params.id
+    MobileProjectModel.findById({_id: projectID})
+        .then(project => {
+            if(project.path){
+              fs.unlinkSync(project.path);
+            }
+        MobileProjectModel.deleteOne({_id: projectID})
+        .then(result => {
+            res.status(200).json({
+                message: 'Document deleted' 
+                })
+            })
+            .catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            })
+        })
+}

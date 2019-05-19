@@ -17,7 +17,8 @@
             </router-link>
             </td>
             <td class="text-xs-center">
-              <img v-if="props.item.iconPath" style='width:50px; height:50px;' :src="props.item.iconPath">
+              <img v-if="icon(props.item.iconPath)" style='width:50px; height:50px;' :src="props.item.iconPath">
+              <img v-else style='width:50px; height:50px;' src="../../assets/No_Image_Available.png">
             </td>
             <td class='project-name'>
                 <div class='project-name__title'>{{props.item.appTitle}}</div>
@@ -135,9 +136,19 @@ export default {
           if(milestone === "Completed"){
              return value = 100;
           }
+        },
+         icon(path){
+          var lastIndex = path.split("/");
+          var isUndef =  lastIndex[lastIndex.length - 1];
+          if(isUndef === 'undefined'){
+            return false
+          }
+          return true
         }
       },
+     
       computed: {
+        
         projects(){
            let projects = this.projectsData;
            if(this.alphabeticalFilterOption){

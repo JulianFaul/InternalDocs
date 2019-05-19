@@ -59,7 +59,8 @@ export default {
   },
   methods: {
         onSubmit(payload) {
-           this.$store.dispatch("createAppSpecs", payload)
+            this.$store.dispatch("createAppSpecs", payload)
+            this.$router.push('/mobileprojects');
     }
   }
 }

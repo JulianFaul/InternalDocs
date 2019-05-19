@@ -3,11 +3,14 @@
     padding: $xs-size;
     border-radius: 3px;
     margin: 0 $xs-size;
+    font-size: $font-size-small;
+    font-weight: normal;
+    vertical-align: middle;
 }
 
 .button__absolute-right{
     position: absolute;
-    top: 30px;
+    top: 33px;
     right: 19%;
 }
 .button:disabled{

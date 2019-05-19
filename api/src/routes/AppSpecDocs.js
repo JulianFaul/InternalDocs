@@ -4,7 +4,7 @@ module.exports = (app) => {
 
     const storage = multer.diskStorage({
         destination: function(req, file, cb) {
-            const dir = './public/uploads/pricelists'
+            const dir = './public/uploads/mobileprojects/documents'
             mkdirp(dir, err => cb(err, dir))
           },
         filename: function(req, file, cb) {
@@ -15,12 +15,13 @@ module.exports = (app) => {
     const controller = require('../controllers/AppSpecDoc');
 
     app.route('/mobileProjects/:id/specfiles')
-    .get(controller.index)
-    .post(upload.array('documents', 5),controller.create)
-   
+        .get(controller.index)
+        .post(upload.array('documents', 5),controller.create)
 
-    
-    app.route('/pricelists/:id')
-    .get(controller.show)
-    .delete(controller.destroy)
+    app.route('/specfiles/:id')
+        .get(controller.show)
+        .delete(controller.destroy)
+
+    app.route('/specfiles')
+        .delete(controller.destroyAll)
 }

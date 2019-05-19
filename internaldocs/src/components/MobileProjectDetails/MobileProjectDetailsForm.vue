@@ -229,8 +229,8 @@ export default {
     },
     computed:{
         productType(){
-            return 'MyQuote';
-            // return this.$store.getters.loadedProject(this.projectID).productType;
+            // return 'MyQuote';
+            return this.$store.getters.loadedProject(this.projectID).productType;
         },
         selectedGeneratedDocs(){
             if(this.productType == 'MySpec'){

@@ -46,7 +46,7 @@ export default {
         })
   },
   createMobileProject({commit}, payload){
-      console.log(payload)
+    commit('setLoading', true);
     let mobileProject = new FormData();
         mobileProject.append('file',               payload.icon);
         mobileProject.append('appTitle',           payload.appTitle);
@@ -70,19 +70,50 @@ export default {
         mobileProject.append('demoLink',           payload.demoLink);
         mobileProject.append('stagingLink',        payload.stagingLink);
         mobileProject.append('develLink',          payload.develLink);
-    commit('setLoading', true);
-    axios.post(apiEndpoint + 'mobileProjects', mobileProject)
-    .then((response) => {
-        console.log(response)
-        commit('setLoading', false);
-    })
-    .catch((err) => {
-        commit('setLoading', false);
-    })
+
+
+        axios.post(apiEndpoint + 'mobileProjects', mobileProject)
+        .then((response) => {
+            commit('createMobileProject', {
+                ...response.data,
+                id: response.data._id
+            })
+            commit('setLoading', false);
+        })
+        .catch((err) => {
+            commit('setLoading', false);
+        })
   },
 
-  deleteMobileProject({commit, state}, payload){
-    console.log(payload)
-    console.log("TODO Delete everthing abou app and documents and details")
+deleteMobileProject({commit, state}, payload){
+    commit('setLoading', true);
+    const projectID = payload.projectID;
+    const specID = payload.specID;
+    axios.delete(apiEndpoint + 'specfiles', {data:{projectID: projectID}})
+        .then((response) => {
+            if(specID){
+                axios.delete(apiEndpoint + 'mobileProjects/' + projectID + '/specs/' + specID)
+                    .then((response) => {
+                        console.log(response.data)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+                axios.delete(apiEndpoint + 'mobileProjects/' + projectID)
+                    .then((response) => {
+                        commit('deletemobileProject', projectID)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+
+            commit('setLoading', false);
+        })
+        .catch((err) => {
+            commit('setLoading', false);
+            console.log(err)
+            
+        })
   }
 }

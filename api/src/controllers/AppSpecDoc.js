@@ -25,22 +25,16 @@ exports.show = (req, res) => {
 exports.create = (req,res) => {
   
     async.each(Object.keys(req.files), function(index, cb) {
-        console.log(req.body)
         const path = require('path')
         const remove = path.join(__dirname, '..', '..', 'public')
         let file = req.files[index];
         let header = req.body.header[index];
-        // const projectID = req.body.projectID[index];
-        // const specID = req.body.specID[index];
-        
         let relPath = file.path.replace(remove, '')
         let newAppSpecDoc = new AppSpecDoc(req.body);
         newAppSpecDoc.documentName = req.files[index].originalname
         newAppSpecDoc.header = header;
         newAppSpecDoc.path = relPath.replace(/\\/g, '/')
         newAppSpecDoc.document_name = file.originalname
-        // newAppSpecDoc.projectID = projectID
-        // newAppSpecDoc.specID = specID
         newAppSpecDoc.save()
         cb()
       }, (err, ret) => {
@@ -66,5 +60,48 @@ exports.destroy = (req, res) => {
                 error: err
             })
         })
+    })
+}
+
+exports.destroyAll = (req, res) => {
+    const projectID = req.body.projectID;
+    AppSpecDoc.find({projectID : projectID}, (err, documents) => {
+        if(err){
+            res.send(err)
+        }
+
+        for(var key in documents){
+            let documentPath = documents[key].path;
+            fs.unlinkSync(documentPath);
+        }
+        AppSpecDoc.deleteMany({projectID: projectID}).then((result) => {
+            res.status(200).json({
+                message: 'documents deleted'
+            })
+        })
+        .catch((err) => {
+            res.status(500).json({
+                error: err
+            })
+        })
+        // async.each(documents, function(specDocument, cb) {
+        //     let documentPath = specDocument.path;
+        //     fs.unlinkSync(documentPath);
+        //     AppSpecDoc.deleteOne({_id: specDocument._id})
+        //         .then(result => {
+        //         res.status(200).json({
+        //             message: 'Documents deleted' 
+        //         })
+        //         })
+        //         .catch(err => {
+        //             res.status(500).json({
+        //                 error: err
+        //             })
+        //         })
+        // },(err, ret) => {
+        //     console.log("done")
+        //       res.send('documents deleted')
+        // })
+
     })
 }

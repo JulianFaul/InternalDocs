@@ -1,10 +1,10 @@
 module.exports = function(app) {
     const MobileProjects = require('./MobileProjects')
     const InternalDocuments = require('./InternalDocuments')
-    const ProjectDetails = require('./ProjectDetails')
+    const MobileProjectSpecs = require('./MobileProjectSpecs')
     const AppSpecDocs = require('./AppSpecDocs')
     MobileProjects(app)
     InternalDocuments(app)
-    ProjectDetails(app)
+    MobileProjectSpecs(app)
     AppSpecDocs(app)
 }

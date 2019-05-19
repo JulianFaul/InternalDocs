@@ -53,6 +53,7 @@ export default {
     methods: {
         onSubmit(payload) {
             this.$store.dispatch('createMobileProject', payload);
+            this.$router.push('/mobileprojects');
         }
     }
 }

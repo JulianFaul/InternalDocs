@@ -21,4 +21,5 @@ module.exports = (app) => {
     app.route('/mobileProjects/:id')
         .get(controller.show)
         .put(controller.update)
+        .delete(controller.destroy)
 }

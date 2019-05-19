@@ -4,7 +4,6 @@
     <div class='mobile-projects-page'>
       <div class='title-container'>
         <h1 class='title-container__title' style="margin: 6px 0px;">{{projectName}} Details </h1>
-        <span @click='deleteMobileProject' style='margin-right:140px; cursor: pointer;' class='button button__red' to='/create'>Delete Project</span>
       </div>
        
       </div>
@@ -25,7 +24,7 @@
 <script>
 import { VTabs, VTab, VBtn, VTabItem, VCard, VCardText } from "vuetify/lib";
 import MobileProjectSpecs from './MobileProjectSpecs'
-import { mapGetters } from 'vuex';
+
 export default {
   props: ["id"],
   components: {
@@ -47,14 +46,10 @@ export default {
     };
   },
   methods: {
-    deleteMobileProject(){
-      this.$store.dispatch('deleteMobileProject', this.loadedAppSpecs)
-    }
+  
   },
   computed: {
-    ...mapGetters([
-      'loadedAppSpecs'
-    ]),
+
     projectName() {
       return this.$store.getters.loadedProject(this.id).appTitle;
     }

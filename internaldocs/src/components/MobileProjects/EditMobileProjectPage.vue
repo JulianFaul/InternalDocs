@@ -2,7 +2,10 @@
     <div>
         <div class='content-container'>
             <div class='title-container'>
-                <h1 class='title-container__title'>Edit Project</h1>
+                <h1 class='title-container__title'>Edit Project
+                 <span @click='deleteMobileProject' style='margin-right:140px; cursor: pointer;' class='button button__red' to='/create'>Delete Project</span>
+                </h1>
+               
             </div>
         </div>
       
@@ -37,10 +40,15 @@ export default {
             return this.$store.getters.loadedProject(this.projectID);
         },
         ...mapGetters([
+        'loadedAppSpecs',
         'loading'
         ]),
     },
     methods: {
+        deleteMobileProject(){
+            this.$store.dispatch('deleteMobileProject', {projectID : this.projectID, specID: this.loadedAppSpecs.specID})
+            this.$router.push('/mobileprojects');
+        },
         onSubmit(payload) {
             console.log("update project in db with these values", payload);
         }

@@ -1,6 +1,6 @@
 <template>
     <v-form class='form' v-on:submit.prevent>
-        <button @click='onSubmit' class="button__absolute-right button button__blue" >{{buttonText}}</button>
+        <button @click='onSubmit' :disabled='!payload.appTitle' class="button__absolute-right button button__blue" >{{buttonText}}</button>
         <div class='form-section'>
             <h4 class='form-section__title'>App Icon:</h4>
             <input accept="image/png" style="display:none;" type="file" @change="onFileSelected" ref="fileInput">
@@ -10,7 +10,7 @@
         <div class='form-section'>
             <h4 class='form-section__title'>App Details:</h4>
             <div class='form-section__details'>
-                <v-text-field  label="App Title" v-model="payload.appTitle"></v-text-field>
+                <v-text-field  label="App Title *" v-model="payload.appTitle"></v-text-field>
                 <v-text-field  label="App Subtitle" v-model="payload.appSubtitle"></v-text-field>
                 <v-select :items="appVersions" label="App Version" v-model='payload.appVersion'></v-select>
                 <v-select :items="countries" label="Countries" v-model='payload.country'></v-select>

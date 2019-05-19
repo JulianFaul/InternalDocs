@@ -20,14 +20,29 @@ export default {
                             title: obj.appspecdocs[key].documentName,
                             path: obj.appspecdocs[key].path,
                             projectID: obj.appspecdocs[key].projectID,
-                            specID: obj.appspecdocs[key].specID,
+                            specID: obj.appspecdocs[key].specID,             
                         })
                     }
                 specs = {
-                    specID: obj._id,
-                    label: obj.title,
-                    projectID: obj.projectID,
-                    appspecdocs: appspecdocs
+                    specID:                 obj._id,
+                    projectID:              obj.projectID,
+                    appspecdocs:            appspecdocs,
+                    usedBy:                 obj.usedBy,              
+                    devices:                obj.devices,   
+                    stores:                 obj.stores,
+                    generatedDoc:           obj.generatedDoc,
+                    multiPricelist:         obj.multiPricelist,
+                    multiPricelistDate:     obj.multiPricelistDate,
+                    priceListDetails:       obj.priceListDetails,
+                    setStatus:              obj.setStatus,
+                    setStatusDate:          obj.setStatusDate,
+                    setStatusDetails:       obj.setStatusDetails,
+                    maintenanceContactName: obj.maintenanceContactName,
+                    maintenanceContactEmail:obj.maintenanceContactEmail,
+                    quoteRequestDetails:    obj.quoteRequestDetails,
+                    contactMeDetails:       obj.contactMeDetails,
+                    specialComments:        obj.specialComments,
+                    dueDate:                obj.dueDate
                 }
                 commit('setAppSpecs', specs);
                 commit('setLoading', false);
@@ -44,15 +59,32 @@ export default {
   },
 
   createAppSpecs({commit}, payload){
-    const projectID = payload.projectID; 
+    const projectID = payload.projectID;
 
-    axios.post(apiEndpoint + 'mobileProjects/' + projectID + '/specs', {title: 'hi'})
+    let specDetails = {}
+        specDetails.usedBy                  = payload.usedBy
+        specDetails.devices                 = payload.devices
+        specDetails.stores                  = payload.stores
+        specDetails.generatedDoc            = payload.generatedDoc
+        specDetails.multiPricelist          = payload.multiPricelist
+        specDetails.multiPricelistDate      = payload.multiPricelistDate
+        specDetails.priceListDetails        = payload.priceListDetails
+        specDetails.setStatus               = payload.setStatus
+        specDetails.setStatusDate           = payload.setStatusDate
+        specDetails.setStatusDetails        = payload.setStatusDetails
+        specDetails.maintenanceContactName  = payload.maintenanceContactName
+        specDetails.maintenanceContactEmail = payload.maintenanceContactEmail
+        specDetails.quoteRequestDetails     = payload.quoteRequestDetails
+        specDetails.contactMeDetails        = payload.contactMeDetails
+        specDetails.specialComments         = payload.specialComments
+        specDetails.dueDate                 = payload.dueDate
+
+
+    axios.post(apiEndpoint + 'mobileProjects/' + projectID + '/specs', specDetails)
     .then((response) => {
-        
       return response.data._id
     })
     .then((specID) => {
-        console.log(specID)
         if(payload.files.length){
             let formData = new FormData();
             for( var i = 0; i < payload.files.length; i++ ){
@@ -65,7 +97,7 @@ export default {
             formData.append('specID', specID);
             axios.post(apiEndpoint + 'mobileProjects/' + projectID + '/specfiles', formData)
             .then((response) => {
-                console.log('im here', response)
+                console.log(response)
             })
             .catch((err) => {
                 console.log("err", err)
