@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
+
 import MobileProjects from './modules/MobileProjects'
-import MobileProjectDetails from './modules/MobileProjectDetails'
+import MobileProjectSpecs from './modules/MobileProjectSpecs'
+import MobileProjectInfo from './modules/MobileProjectInfo'
+
 import InternalDocuments from './modules/InternalDocuments'
 import Shared from './modules/Shared'
 
@@ -13,9 +16,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     MobileProjects,
-    MobileProjectDetails,
+    MobileProjectSpecs,
     InternalDocuments,
+    MobileProjectInfo,
     Shared
   },
-  plugins: [createPersistedState()],
+  // plugins: [createPersistedState()],
 })

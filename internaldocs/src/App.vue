@@ -1,5 +1,6 @@
 <template>
   <v-app id="app">
+    <snackbar></snackbar>
     <TopNav></TopNav>
      <v-content>
       <v-container fluid>

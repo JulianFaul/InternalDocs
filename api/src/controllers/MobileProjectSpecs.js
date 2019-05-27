@@ -15,7 +15,6 @@ exports.create = (req, res) => {
     if(!req.body){
         return res.status(400).send('Request body is missing');
     }
-    console.log(req.body)
     let model = new ProjectSpec(req.body)
     model.projectID = req.params.id;
     model.save()
@@ -28,6 +27,41 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).json(err)
         })
+}
+
+exports.update = (req, res) => {
+
+    ProjectSpec.findById({_id:req.params.specID}, (err, spec) => {
+        if(req.body !== undefined) {
+            spec.usedBy = req.body.usedBy,
+            spec.devices =req.body.devices,
+            spec.stores = req.body.stores,
+            spec.generatedDoc = req.body.generatedDoc,
+            spec.multiPricelist = req.body.multiPricelist,
+            spec.multiPricelistDate = req.body.multiPricelistDate,
+            spec.priceListDetails = req.body.priceListDetails,
+            spec.setStatus = req.body.setStatus,
+            spec.setStatusDate = req.body.setStatusDate,
+            spec.setStatusDetails = req.body.setStatusDetails,
+            spec.setRepsDate = req.body.setRepsDate,
+            spec.maintenanceContactName = req.body.maintenanceContactName,
+            spec.maintenanceContactEmail = req.body.maintenanceContactEmail,
+            spec.quoteRequestDetails = req.body.quoteRequestDetails,
+            spec.contactMeDetails = req.body.contactMeDetails,
+            spec.specialComments = req.body.specialComments,
+            spec.dueDate = req.body.dueDate
+        }
+        if(req.body.completed !== undefined) {
+            spec.completed = req.body.completed
+        }
+        spec.save((e, updatedSpec) => {
+          if(err) {
+            res.status(400).send(e)
+          } else {
+            res.send(updatedSpec)
+          }
+        })
+      })
 }
 
 exports.showFiles = (req, res) => {
@@ -55,20 +89,3 @@ exports.destroy = (req, res) => {
             })
         })
 }
-
-
-
-// IF i want to move documents to a backup folder
-// upload(req,res,function(err) {
-//     if(err) {
-//         console.log(err);
-//         return res.end("Error uploading file.");
-//     } else {
-//        console.log(req.body);
-//        req.files.forEach( function(f) {
-//          console.log(f);
-//          // and move file to final destination...
-//        });
-//        res.end("File has been uploaded");
-//     }
-// });

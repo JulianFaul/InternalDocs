@@ -1,5 +1,5 @@
 <template>
-    <v-form class='form' v-on:submit.prevent>
+    <div class='form'>
         <button @click='onSubmit' :disabled='!payload.appTitle' class="button__absolute-right button button__blue" >{{buttonText}}</button>
         <div class='form-section'>
             <h4 class='form-section__title'>App Icon:</h4>
@@ -82,7 +82,7 @@
             </div>
         </div> 
         
-    </v-form>
+    </div>
 </template>
 
 <script>

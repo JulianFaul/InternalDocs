@@ -23,7 +23,7 @@ exports.show = (req, res) => {
 }
 
 exports.create = (req,res) => {
-  
+    let docs = [];
     async.each(Object.keys(req.files), function(index, cb) {
         const path = require('path')
         const remove = path.join(__dirname, '..', '..', 'public')
@@ -31,28 +31,34 @@ exports.create = (req,res) => {
         let header = req.body.header[index];
         let relPath = file.path.replace(remove, '')
         let newAppSpecDoc = new AppSpecDoc(req.body);
-        newAppSpecDoc.documentName = req.files[index].originalname
-        newAppSpecDoc.header = header;
-        newAppSpecDoc.path = relPath.replace(/\\/g, '/')
-        newAppSpecDoc.document_name = file.originalname
-        newAppSpecDoc.save()
-        cb()
+            newAppSpecDoc.documentName = req.files[index].originalname
+            newAppSpecDoc.header = header;
+            newAppSpecDoc.path = relPath.replace(/\\/g, '/')
+            newAppSpecDoc.document_name = file.originalname
+            newAppSpecDoc.save().then((response) => {
+                docs.push(response)
+                cb()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        
       }, (err, ret) => {
+          
           console.log("done")
-            res.send('documents uploaded')
+            res.send(docs)
       })
     
 }
 
 exports.destroy = (req, res) => {
-    const pricelistID = req.params.id;
-    PricelistDocument.findById({_id: pricelistID})
-    .then(pricelistDocument => {
-        fs.unlinkSync(pricelistDocument.path);
-        PricelistDocument.deleteOne({_id: pricelistDocument._id})
+    AppSpecDoc.findById({_id: req.params.docID})
+    .then(document => {
+        fs.unlinkSync(document.path);
+        AppSpecDoc.deleteOne({_id: document._id})
         .then(result => {
            res.status(200).json({
-               message: 'Pricelist document deleted' 
+               message: 'Document deleted' 
            })
         })
         .catch(err => {
@@ -69,10 +75,11 @@ exports.destroyAll = (req, res) => {
         if(err){
             res.send(err)
         }
-
-        for(var key in documents){
-            let documentPath = documents[key].path;
-            fs.unlinkSync(documentPath);
+        if(documents.length){
+            for(var key in documents){
+                let documentPath = documents[key].path;
+                fs.unlinkSync(documentPath);
+            }
         }
         AppSpecDoc.deleteMany({projectID: projectID}).then((result) => {
             res.status(200).json({
@@ -84,24 +91,5 @@ exports.destroyAll = (req, res) => {
                 error: err
             })
         })
-        // async.each(documents, function(specDocument, cb) {
-        //     let documentPath = specDocument.path;
-        //     fs.unlinkSync(documentPath);
-        //     AppSpecDoc.deleteOne({_id: specDocument._id})
-        //         .then(result => {
-        //         res.status(200).json({
-        //             message: 'Documents deleted' 
-        //         })
-        //         })
-        //         .catch(err => {
-        //             res.status(500).json({
-        //                 error: err
-        //             })
-        //         })
-        // },(err, ret) => {
-        //     console.log("done")
-        //       res.send('documents deleted')
-        // })
-
     })
 }

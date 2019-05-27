@@ -17,16 +17,16 @@
             </router-link>
             </td>
             <td class="text-xs-center">
-              <img v-if="icon(props.item.iconPath)" style='width:50px; height:50px;' :src="props.item.iconPath">
-              <img v-else style='width:50px; height:50px;' src="../../assets/No_Image_Available.png">
+              <img v-if="props.item.iconPath" style='width:35px; height:35px;' :src="props.item.iconPath">
+              <img v-else style='width:35px; height:35px;' src="../../assets/No_Image_Available.png">
             </td>
             <td class='project-name'>
                 <div class='project-name__title'>{{props.item.appTitle}}</div>
                 <div class='project-name__link'><router-link :to="'details/' + props.item.id">Details</router-link></div>
             </td>
             <td class="text-xs-center">{{props.item.appType}}</td>
-            <td class="text-xs-center ">
-                {{props.item.appStatus}}
+            <td class="text-xs-center" :class='getClass(props.item.appStatus)'>
+                <span>{{props.item.appStatus}}</span>
             </td>
             <td class="text-xs-center project-status">
                 <v-progress-linear class="project-status__progress" :value="getMilestoneValue(props.item.milestone)"></v-progress-linear>
@@ -51,21 +51,20 @@
             <td class="text-xs-center">
               <div class='project-version'>
                 <div>
-                 
                   <div class='project-version__title'><a target="_blank" :href='"//" + props.item.develLink' :class='props.item.appDevel === true ? "project-version__title__pink" : "project-version__title__disabled"'>Devel</a></div>
-                  <div class='project-version__date'>{{props.item.develDate  !== "Invalid date" ? props.item.develDate : "&nbsp;"}}</div>
+                  <div class='project-version__date' v-html='props.item.develDate'></div>
                 </div>
                 <div>
                   <div class='project-version__title'><a target="_blank" :href='"//" + props.item.stagingLink' :class='props.item.appStaging === true ? "project-version__title__yellow" : "project-version__title__disabled"'>Staging</a></div>
-                  <div class='project-version__date'>{{props.item.stagingDate !== "Invalid date" ? props.item.stagingDate : "&nbsp;"}}</div>
+                  <div class='project-version__date' v-html='props.item.stagingDate'></div>
                 </div>
                 <div>
                   <div class='project-version__title'><a target="_blank" :href='"//" + props.item.demoLink' :class='props.item.appDemo === true ? "project-version__title__blue" : "project-version__title__disabled"' >Demo</a></div>
-                  <div class='project-version__date'>{{props.item.demoDate !== "Invalid date" ? props.item.demoDate : "&nbsp;"}}</div>
+                  <div class='project-version__date' v-html='props.item.demoDate'></div>
                 </div>
                 <div>
                   <div class='project-version__title'><a target="_blank" :href='"//" + props.item.liveLink' :class='props.item.appLive === true ? "project-version__title__green" : "project-version__title__disabled"'>Live</a></div>
-                  <div class='project-version__date'>{{props.item.liveDate !== "Invalid date" ? props.item.liveDate : "&nbsp;"}}</div>
+                  <div class='project-version__date' v-html='props.item.liveDate'></div>
                 </div>
               </div>
             </td>
@@ -109,7 +108,20 @@ export default {
         selectedAlphabeticalFilterOption(option) {
             this.alphabeticalFilterOption = option;
         },
-
+        getClass(status){
+          if(status === 'Client Using App'){
+            return 'status-blue'
+          }
+          if(status === 'Waiting for Client'){
+            return 'status-green'
+          }
+          if(status === 'Client Reviewing on Demo'){
+            return 'status-green'
+          }
+          if(status === 'In Progress'){
+            return 'status-green'
+          }
+        },
         getMilestoneValue(milestone){
           let value;
           if(milestone === "Not Started"){
@@ -136,19 +148,10 @@ export default {
           if(milestone === "Completed"){
              return value = 100;
           }
-        },
-         icon(path){
-          var lastIndex = path.split("/");
-          var isUndef =  lastIndex[lastIndex.length - 1];
-          if(isUndef === 'undefined'){
-            return false
-          }
-          return true
         }
       },
-     
+    
       computed: {
-        
         projects(){
            let projects = this.projectsData;
            if(this.alphabeticalFilterOption){
@@ -159,8 +162,8 @@ export default {
            }
            return projects
         }
-      }
+      },
+     
 }
 
 </script>
-

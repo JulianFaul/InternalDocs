@@ -22,6 +22,7 @@ module.exports = (app) => {
     app.route('/mobileProjects/:id/specs/:specID')
     .get(controller.showFiles)
     .delete(controller.destroy)
+    .put(controller.update)
 
   
 }

@@ -1,6 +1,5 @@
 export default {
     loadedMobileProjects(state){
-
         return state.loadedMobileProjects.sort((projectA, projectB) => {
             return projectA.appTitle.localeCompare(projectB.appTitle)
         })

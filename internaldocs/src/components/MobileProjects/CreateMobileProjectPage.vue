@@ -2,7 +2,10 @@
     <div>
         <div class='content-container'>
             <div class='title-container'>
-                <h1 class='title-container__title'>Create New Project</h1>
+                <h1 class='title-container__title'>
+                    <router-link to='/mobileprojects'>
+            <v-icon style='vertical-align: middle;'>keyboard_backspace</v-icon>
+          </router-link>Create New Project</h1>
             </div>
         </div>
         <div class='scroll-container'>
@@ -16,14 +19,17 @@
 <script>
 
 import MobileProjectForm from './MobileProjectForm'
+import {VIcon} from 'vuetify/lib';
 export default {
     name: 'CreateProjectPage',
     components:{
-        MobileProjectForm
+        MobileProjectForm,
+        VIcon
     },
     data () {
         return {
             buttonText: 'Create Project',
+            formMode: 'create',
             projectData: {
                 appTitle: '',
                 appSubtitle: '',

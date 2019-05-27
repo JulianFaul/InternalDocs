@@ -2,7 +2,10 @@
     <div>
         <div class='content-container'>
             <div class='title-container'>
-                <h1 class='title-container__title'>Edit Project
+                <h1 class='title-container__title'>
+                    <router-link to='/mobileprojects'>
+            <v-icon style='vertical-align: middle;'>keyboard_backspace</v-icon>
+          </router-link> Edit Project
                  <span @click='deleteMobileProject' style='margin-right:140px; cursor: pointer;' class='button button__red' to='/create'>Delete Project</span>
                 </h1>
                
@@ -11,8 +14,8 @@
       
         <div class='scroll-container'>
             <div class='content-container'>
-                <loading-page v-if='loading'></loading-page>
-                <MobileProjectForm v-else :buttonText='buttonText' :projectData='loadedProject' @onSubmit="onSubmit"></MobileProjectForm>
+                <loadingPage v-if='loading'></loadingPage>
+                <MobileProjectForm v-else :formMode='formMode' :buttonText='buttonText' :projectData='loadedProject' @onSubmit="onSubmit"></MobileProjectForm>
             </div>
         </div>
     </div>
@@ -22,22 +25,30 @@
 
 import MobileProjectForm from './MobileProjectForm'
 import LoadingPage from '../LoadingPage/LoadingPage';
+import {VIcon} from 'vuetify/lib';
 import { mapGetters } from 'vuex';
 export default {
     name: 'CreateProjectPage',
     props: ['projectID'],
     components:{
         MobileProjectForm,
-        LoadingPage
+        LoadingPage,
+        VIcon
     },
     data () {
         return {
-            buttonText: 'Update Project'
+            buttonText: 'Update Project',
+            formMode: 'edit'
         }
     },
     computed:{
         loadedProject(){
-            return this.$store.getters.loadedProject(this.projectID);
+            let project = this.$store.getters.loadedProject(this.projectID);
+            if(project){
+                return this.$store.getters.loadedProject(this.projectID);
+            }else{
+                return this.$store.dispatch('getMobileProjects')
+            }
         },
         ...mapGetters([
         'loadedAppSpecs',
@@ -50,9 +61,11 @@ export default {
             this.$router.push('/mobileprojects');
         },
         onSubmit(payload) {
-            console.log("update project in db with these values", payload);
+            payload.projectID = this.projectID
+            this.$store.dispatch("updateMobileProject", payload);
         }
-    }
+    },
+    
 }
 </script>
 

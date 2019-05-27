@@ -15,7 +15,7 @@ export default {
                     id: obj[key]._id,
                     document_type:  obj[key].document_type,
                     title:          obj[key].title,
-                    path:           obj[key].path,
+                    path:           apiEndpoint + obj[key].path,
                     division:       obj[key].division,
                     platform:       obj[key].platform,
                     document_name:  obj[key].document_name,

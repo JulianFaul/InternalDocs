@@ -18,9 +18,10 @@ module.exports = (app) => {
         .get(controller.index)
         .post(upload.array('documents', 5),controller.create)
 
-    app.route('/specfiles/:id')
+    app.route('/specfiles/:docID')
         .get(controller.show)
         .delete(controller.destroy)
+       
 
     app.route('/specfiles')
         .delete(controller.destroyAll)

@@ -12,8 +12,14 @@ import DocumentsPage from '../components/InternalDocuments/DocumentsPage'
 import CreateDocumentPage from '../components/InternalDocuments/CreateDocumentPage'
 
 import MobileProjectDetails from '../components/MobileProjectDetails/MobileProjectDetailsPage'
-import CreateMobileProjectDetailsPage from '../components/MobileProjectDetails/CreateMobileProjectDetailsPage'
-import EditMobileProjectDetailsPage from '../components/MobileProjectDetails/EditMobileProjectDetailsPage'
+import CreateMobileProjectSpec from '../components/MobileProjectDetails/MobileProjectSpecs/CreateMobileProjectSpec'
+import EditMobileProjectSpec from '../components/MobileProjectDetails/MobileProjectSpecs/EditMobileProjectSpec'
+
+
+import CreateMobileProjectsStatInfo from '../components/MobileProjectDetails/MobileProjectStatsInfo/CreateMobileProjectsStatInfo'
+import EditMobileProjectsStatInfo from '../components/MobileProjectDetails/MobileProjectStatsInfo/EditMobileProjectsStatInfo'
+
+import CreateMobileProjectStore from '../components/MobileProjectDetails/MobileProjectStore/CreateMobileProjectStore'
 
 Vue.use(Router)
 
@@ -73,18 +79,35 @@ export default new Router({
     },
     {
       path: '/details/:id/create',
-      name: 'CreateMobileProjectDetailsPage',
-      component: CreateMobileProjectDetailsPage,
+      name: 'CreateMobileProjectSpec',
+      component: CreateMobileProjectSpec,
       props: true,
     },
     {
-      path: '/details/:id/edit',
-      name: 'EditMobileProjectDetailsPage',
-      component: EditMobileProjectDetailsPage,
+      path: '/details/:id/edit/:specID',
+      name: 'EditMobileProjectSpec',
+      component: EditMobileProjectSpec,
       props: true,
-    }
+    },
+    {
+      path: '/stat/:id/create',
+      name: 'CreateMobileProjectsStatInfo',
+      component: CreateMobileProjectsStatInfo,
+      props: true,
+    },
+    {
+      path: '/stat/:id/edit/:infoID',
+      name: 'EditMobileProjectsStatInfo',
+      component: EditMobileProjectsStatInfo,
+      props: true,
+    },
+    {
+      path: '/store/:id/create',
+      name: 'CreateMobileProjectStore',
+      component: CreateMobileProjectStore,
+      props: true,
+    },
 
-    
   ],
   mode: 'history'
 })

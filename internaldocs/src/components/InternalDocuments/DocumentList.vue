@@ -5,11 +5,11 @@
                 <v-divider :key="index"></v-divider>
             <v-list-tile class="document-list__item" v-for="doc in documents[group_name]" :key="doc.id">
                 <v-list-tile-content>
-                    <v-list-tile-title v-html="doc.title"></v-list-tile-title>
+                    <v-list-tile-title v-html="doc.document_name"></v-list-tile-title>
                     <v-list-tile-sub-title >Uploaded: {{doc.createdAt}} Division: {{doc.division}} - {{doc.platform}}</v-list-tile-sub-title>
                 </v-list-tile-content>
                 <v-spacer></v-spacer>
-                    <v-icon @click='download' class="button">vertical_align_bottom</v-icon>
+                    <v-icon @click='downloadFile(doc.path, doc.document_name)' class="button">vertical_align_bottom</v-icon>
                     <button class="button button__blue">Update</button>
                     <v-icon @click='deleteDocument(doc.id)' class="button button__red-text">delete</v-icon>
             </v-list-tile>
@@ -41,8 +41,8 @@ export default {
         }
     },
     methods:{
-        download(){
-            console.log("Download file")
+        downloadFile(path, filename){
+         this.$store.dispatch('downloadFile', {'url': path, 'filename': filename})
         },
         deleteDocument(id){
             this.$store.dispatch("deleteInternalDocument", id)

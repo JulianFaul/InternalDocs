@@ -1,12 +1,13 @@
 <template>
  
        
-        <v-form class='form' v-on:submit.prevent>
-            <button @click='onSubmit' class="button__absolute-right button button__blue">{{buttonText}}</button>
-        
+        <div class='form' v-on:submit.prevent>
+            <button type="submit" @click='onSubmit' class="button__absolute-right button button__blue">{{buttonText}}</button>
+       
         <div class='form-section'>
             <h3 class='form-section__title'>Product Type: {{productType}}</h3>
         </div>
+    
 
         <div v-if="productType == 'MyQuote'" class='form-section'>
             <h4 class='form-section__title'>App will be used by: <button v-if='payload.usedBy.length' @click="resetUsedBy" class="button button__sm-reset">Reset</button></h4>
@@ -42,19 +43,23 @@
             <input style="display:none;" type="file" @change="onFileSelected($event, 'Pricelist Files')" multiple ref="onPriceListSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onPriceListSelected.click()">Upload Pricelists</button>
         </div>
+        
         <div v-if='payload.multiPricelist' class='form-section form-section__sub'>
-            <h4 class='form-section__title'>Selected Pricelists</h4>
+            <h4 v-if='pricelistSelected' class='form-section__title'>Selected Pricelists</h4>
              <div v-for="(file, key) in payload.files" :key="key" v-if='payload.files[key].header == "Pricelist Files"'  class="file-listing">• {{ file.name }}
               <v-icon @click='removeFile( key )' small style="color:red;">delete</v-icon>
             </div>
         </div>
 
-        <div v-if='payload.existingPriceListFiles.length' class='form-section form-section__sub'>
-            <h4 class='form-section__title'>Existing Pricelists</h4>
-             <div v-for="(file, key) in payload.existingPriceListFiles" :key="key" class="file-listing">• {{ file.name }}
-              <v-icon @click='removeExistingPriceList( key )' small style="color:red;">delete</v-icon>
+        <div v-if='formMode === "edit" && projectDetailsData.existingPricelists.length' class='form-section form-section__sub'>
+            <h4 v-if='projectDetailsData.existingPricelists.length' class='form-section__title'>Existing Pricelists</h4>
+             <div v-if='doc.header === "Pricelist Files"' v-for='doc in projectDetailsData.existingPricelists' :key='doc.id' class="file-listing">
+                {{doc.filename}}
+              <v-icon  @click='deleteFile( doc )' small style="color:red;">delete</v-icon>
             </div>
         </div>
+
+        
 
         <div v-if="productType == 'MyQuote'" class='form-section'>
             <h4 class='form-section__title'>Do you have set statuses?</h4>
@@ -71,17 +76,20 @@
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onSetStatusSelected.click()">Upload Statuses</button>
         </div>
         <div v-if='payload.setStatus' class='form-section form-section__sub'>
-            <h4 class='form-section__title'>Selected Statuses</h4>
+            <h4 v-if='statusSelected' class='form-section__title'>Selected Statuses</h4>
              <div v-for="(file, key) in payload.files" :key="key" v-if='payload.files[key].header == "Status Files"' class="file-listing">• {{ file.name }}
               <v-icon @click='removeFile( key )' small style="color:red;">delete</v-icon>
             </div>
         </div>
-        <div v-if='payload.existingSetStatusFiles.length' class='form-section form-section__sub'>
-            <h4 class='form-section__title'>Existing Statuses</h4>
-             <div v-for="(file, key) in payload.existingSetStatusFiles" :key="key" class="file-listing">• {{ file.name }}
-              <v-icon @click='removeExistingStatus( key )' small style="color:red;">delete</v-icon>
+
+        <div v-if='formMode === "edit" && projectDetailsData.existingStatusFiles.length' class='form-section form-section__sub'>
+            <h4 v-if='projectDetailsData.existingStatusFiles.length' class='form-section__title'>Existing Pricelists</h4>
+             <div v-for='doc in projectDetailsData.existingStatusFiles' :key='doc.id' class="file-listing">
+                {{doc.filename}}
+              <v-icon @click='deleteFile( doc )' small style="color:red;">delete</v-icon>
             </div>
         </div>
+
 
         <div v-if="productType == 'MyQuote' && payload.usedBy.includes('Reps')" class='form-section'>
             <h4 class='form-section__title'>List of Reps</h4>
@@ -89,21 +97,37 @@
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofRepsSelected.click()">Upload List of Reps</button>
         </div>
         <div v-if="payload.usedBy.includes('Reps')" class='form-section form-section__sub'>
-           <h4 class='form-section__title'>Selected List of Reps</h4>
+           <h4 v-if='repsSelected' class='form-section__title'>Selected List of Reps</h4>
              <div v-for="(file, key) in payload.files" :key="key" v-if='payload.files[key].header == "Rep Files"' class="file-listing">• {{ file.name }}
               <v-icon @click='removeFile( key )' small style="color:red;">delete</v-icon>
             </div>
         </div>
 
+        <div v-if='formMode === "edit" && projectDetailsData.existingRepFiles.length' class='form-section form-section__sub'>
+            <h4 v-if='projectDetailsData.existingRepFiles.length' class='form-section__title'>Existing Pricelists</h4>
+             <div v-for='doc in projectDetailsData.existingRepFiles' :key='doc.id' class="file-listing">
+                {{doc.filename}}
+              <v-icon @click='deleteFile( doc )' small style="color:red;">delete</v-icon>
+            </div>
+        </div>
+
         <div v-if="productType == 'MyQuote' && payload.usedBy.includes('Customers')" class='form-section'>
             <h4 class='form-section__title'>List of Customers</h4>
-            <input style="display:none;" type="file" @change="onListofCustomersSelected" ref="onListofCustomersSelected">
+            <input style="display:none;" type="file" v-on:change="onFileSelected($event, 'Customer Files')" ref="onListofCustomersSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofCustomersSelected.click()">Upload List of Customers</button>
         </div>
         <div v-if='payload.listOfCustomerFile' class='form-section form-section__sub'>
             <h4 class='form-section__title'>Selected List of Customers</h4>
-            <div>{{payload.listOfCustomerFile.name}}
-                <v-icon @click='removeListOfCustomer()' small style="color:red;">delete</v-icon>
+            <div v-for="(file, key) in payload.files" :key="key" v-if='payload.files[key].header == "List Of Reps File"'>{{file.name}}
+                <v-icon @click='removeFile( key )' small style="color:red;">delete</v-icon>
+            </div>
+        </div>
+
+        <div v-if='formMode === "edit" && projectDetailsData.existingCustomerFiles.length' class='form-section form-section__sub'>
+            <h4 v-if='projectDetailsData.existingCustomerFiles.length' class='form-section__title'>Existing Pricelists</h4>
+             <div v-for='doc in projectDetailsData.existingCustomerFiles' :key='doc.id' class="file-listing">
+                {{doc.filename}}
+              <v-icon @click='deleteFile( doc )' small style="color:red;">delete</v-icon>
             </div>
         </div>
 
@@ -158,7 +182,7 @@
             <datepicker style='margin:0px;' placeholder='Please select a date' class='form-section__datepicker' :format="customFormatter" :value="payload.dueDate" v-model='payload.dueDate'></datepicker>
         </div>
         
-        </v-form>
+        </div>
 
 </template>
 
@@ -167,12 +191,13 @@
 import {VIcon, VForm, VTextField,VSelect, VRadioGroup, VRadio, VCheckbox} from 'vuetify/lib';
 import moment from 'moment';
 import Datepicker from 'vuejs-datepicker';
-import loadingPage from '../LoadingPage/LoadingPage'
+import loadingPage from '../../LoadingPage/LoadingPage'
 export default {
     props:[
         "buttonText",
         "projectID",
-        "projectDetailsData"
+        "formMode",
+        "projectDetailsData",
     ],
     components:{
         VForm,
@@ -193,6 +218,9 @@ export default {
             contactMeName: '',
             contactMeEmail: '',
             contactMeRegion: '',
+            repsSelected: false,
+            statusSelected: false,
+            pricelistSelected: false,
             usedBy: ['Public', 'Reps', 'Customers'],
             devices: ['Desktop', 'Tablets', 'Phones'],
             stores: ['iTunes', 'Google Play'],
@@ -206,30 +234,23 @@ export default {
                 multiPricelist:             this.projectDetailsData.multiPricelist,
                 multiPricelistDate:         this.projectDetailsData.multiPricelistDate,
                 priceListDetails:           this.projectDetailsData.priceListDetails,
-                priceListFiles:             this.projectDetailsData.priceListFiles,
-                existingPriceListFiles:     this.projectDetailsData.existingPriceListFiles,
                 setStatus:                  this.projectDetailsData.setStatus,
                 setStatusDate:              this.projectDetailsData.setStatusDate,
                 setStatusDetails:           this.projectDetailsData.setStatusDetails,
-                setStatusFiles:             this.projectDetailsData.setStatusFiles,
-                existingSetStatusFiles:     this.projectDetailsData.existingSetStatusFiles,
-                listOfRepFile:              this.projectDetailsData.listOfRepFile,
-                listOfRepFileDate:          this.projectDetailsData.listOfRepFileDate,
-                listOfCustomerFile:         this.projectDetailsData.listOfCustomerFile,
-                listOfCustomerFileDate:     this.projectDetailsData.listOfCustomerFileDate,
                 maintenanceContactName:     this.projectDetailsData.maintenanceContactName,
                 maintenanceContactEmail:    this.projectDetailsData.maintenanceContactEmail,
                 quoteRequestDetails:        this.projectDetailsData.quoteRequestDetails,
                 contactMeDetails:           this.projectDetailsData.contactMeDetails,
                 specialComments:            this.projectDetailsData.specialComments,
+                setRepsDate:                this.projectDetailsData.setRepsDate,
                 dueDate:                    this.projectDetailsData.dueDate,
                 files:                      []
             }
         }
+
     },
     computed:{
         productType(){
-            // return 'MyQuote';
             return this.$store.getters.loadedProject(this.projectID).productType;
         },
         selectedGeneratedDocs(){
@@ -243,6 +264,9 @@ export default {
         }
     },
     methods:{
+        deleteFile(doc){
+            this.$store.dispatch('deleteDocument', doc.id)
+        },
         customFormatter(date) {
             return moment(date).format('dddd, MMMM Do YYYY');
         },
@@ -302,72 +326,47 @@ export default {
             this.quoteRequestRegion = '';
         },
         setMultiPricelistDate(){
-            if(!this.payload.multiPricelist){
-                this.payload.priceListFiles = [];
-                this.payload.priceListDetails = '';
-            }
             this.payload.multiPricelistDate = moment().format();
         },
         setStatusDate(){
-            if(!this.payload.setStatus){
-                this.payload.setStatusFiles = [];
-                this.payload.setStatusDetails = '';
-            }
-            
            this.payload.setStatusDate = moment().format();
-        },
-        removeListOfCustomer(){
-            this.payload.listOfCustomerFile = '';
-            this.payload.listOfCustomerFileDate = '';
-        },
-        removeListOfRep(){
-            this.payload.listOfRepFile = '';
-            this.payload.listOfRepFileDate = '';
-        },
-        removeContactMeDetails( key ){
-            this.payload.contactMeDetails.splice( key, 1 );
-        },
-        removeQuoteDetails( key ){
-            this.payload.quoteRequestDetails.splice( key, 1 );
-        },
-        removePriceList( key ){
-            this.payload.priceListFiles.splice( key, 1 );
-        },
-        removeSetStatus( key ){
-            this.payload.setStatusFiles.splice( key, 1 );
-        },
-        onListofCustomersSelected( event ){
-            let customerFile =  event.target.files[0];
-            this.payload.listOfCustomerFile = customerFile;
-            this.payload.listOfCustomerFileDate = moment().format();
-        },
-        onListofRepsSelected(event){
-             let repfile =  event.target.files[0];
-             this.payload.listOfRepFile = repfile;
-             this.payload.listOfRepFileDate = moment().format();
-        },
-        onSetStatusSelected(event){
-            let statusFiles =  event.target.files;
-            for( var i = 0; i < statusFiles.length; i++ ){
-                this.payload.setStatusFiles.push( statusFiles[i] );
-            }
-        },
-        onPriceListSelected(event, header){
-            let priceListFiles =  event.target.files;
-            for( var i = 0; i < priceListFiles.length; i++ ){
-                priceListFiles[i].header = header;
-                this.payload.priceListFiles.push( priceListFiles[i] );
-            }
         },
         onFileSelected(event, header){
             let files =  event.target.files;
+            if(header === 'Pricelist Files'){
+                this.pricelistSelected = true
+            }
+            if(header === 'Rep Files'){
+
+                this.repsSelected = true
+            }
+            if(header === 'Status Files'){
+                this.statusSelected = true
+            }
             for( var i = 0; i < files.length; i++ ){
                 files[i].header = header;
+                this.payload.setRepsDate = moment().format();
                 this.payload.files.push( files[i] );
             }
         },
         removeFile( key ){
             this.payload.files.splice( key, 1 );
+            let files = this.payload.files;
+            let vm = this;
+            setTimeout(function(){
+                var headers = [];
+                for(var key in files){
+                    headers.push(files[key].header)
+                }
+                if(!headers.includes("Pricelist Files") || headers.length === 0 ){
+                    vm.pricelistSelected = false
+                }
+                vm.repsSelected = false
+                if(!headers.includes("Status Files") || headers.length === 0){
+                    vm.statusSelected = false
+                }
+            }, 10);
+
         },
         removeExistingPriceList(){
             console.log("Add code to do a call to remove the existing pricelist")

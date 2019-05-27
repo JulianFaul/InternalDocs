@@ -25,7 +25,8 @@ export default {
       'loading'
     ]),
   },
-  mounted () {
+   created () {
+    // console.log("before created")
     this.$store.dispatch('getMobileProjects')
   }
 }

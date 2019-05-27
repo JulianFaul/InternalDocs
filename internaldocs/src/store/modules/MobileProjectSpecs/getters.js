@@ -3,6 +3,7 @@ export default {
         return state.loadedAppSpecs;
     },
     loadedAppSpec(state){
+        
     },
     loadedPricelistDocuments(state){
         return state.loadedPricelistDocuments;

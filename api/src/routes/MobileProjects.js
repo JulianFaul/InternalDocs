@@ -20,6 +20,6 @@ module.exports = (app) => {
     
     app.route('/mobileProjects/:id')
         .get(controller.show)
-        .put(controller.update)
+        .put(upload.single('file'), controller.update)
         .delete(controller.destroy)
 }
