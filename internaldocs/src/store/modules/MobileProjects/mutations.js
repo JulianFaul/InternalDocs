@@ -6,12 +6,9 @@ export default {
       state.loadedMobileProjects.push(payload)
     },
     updateMobileProject(state, payload){
-      
       let singleMobileProject = state.loadedMobileProjects.find(mobileProject => {
-        
         return mobileProject.id === payload.projectID
       })
-     
       if(payload.appTitle){
         singleMobileProject.appTitle = payload.appTitle
       }

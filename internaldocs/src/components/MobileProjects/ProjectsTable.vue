@@ -10,15 +10,15 @@
         >
         <template v-slot:items="props">
             <td class="text-xs-center">
-            <router-link class="link" :to="'edit/' + props.item.id">
+            <router-link class="link" :to="{name: 'EditMobileProjectPage', params: {projectID: props.item.id, project: props.item}}">
               <v-icon small class="text-xs-center">
                   edit
               </v-icon>
             </router-link>
             </td>
             <td class="text-xs-center">
-              <img v-if="props.item.iconPath" style='width:35px; height:35px;' :src="props.item.iconPath">
-              <img v-else style='width:35px; height:35px;' src="../../assets/No_Image_Available.png">
+              <img v-if="props.item.iconPath" style='width:35px;' :src="props.item.iconPath">
+              <img v-else style='width:35px; ' src="../../assets/No_Image_Available.png">
             </td>
             <td class='project-name'>
                 <div class='project-name__title'>{{props.item.appTitle}}</div>

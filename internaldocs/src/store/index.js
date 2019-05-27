@@ -21,5 +21,5 @@ export default new Vuex.Store({
     MobileProjectInfo,
     Shared
   },
-  // plugins: [createPersistedState()],
+  plugins: [createPersistedState()],
 })

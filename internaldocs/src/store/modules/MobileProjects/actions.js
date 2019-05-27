@@ -47,31 +47,84 @@ export default {
   updateMobileProject({commit}, payload){
     commit('setLoading', true);
     let mobileProject = new FormData();
-        mobileProject.append('file',               payload.icon);
-        mobileProject.append('appTitle',           payload.appTitle);
-        mobileProject.append('appSubtitle',        payload.appSubtitle);
-        mobileProject.append('appVersion',         payload.appVersion);
-        mobileProject.append('country',            payload.country);
-        mobileProject.append('appType',            payload.appType);
-        mobileProject.append('priority',           payload.priority);
-        mobileProject.append('productType',        payload.productType);
-        mobileProject.append('appLive',            payload.appLive);
-        mobileProject.append('appDemo',            payload.appDemo);
-        mobileProject.append('appStaging',         payload.appStaging);
-        mobileProject.append('appDevel',           payload.appDevel);
-        mobileProject.append('liveDate',           payload.liveDate);
-        mobileProject.append('demoDate',           payload.demoDate);
-        mobileProject.append('stagingDate',        payload.stagingDate);
-        mobileProject.append('develDate',          payload.develDate);
-        mobileProject.append('milestone',          payload.milestone);
-        mobileProject.append('appStatus',          payload.appStatus);
-        mobileProject.append('liveLink',           payload.liveLink);
-        mobileProject.append('demoLink',           payload.demoLink);
-        mobileProject.append('stagingLink',        payload.stagingLink);
-        mobileProject.append('develLink',          payload.develLink);
+    if(payload.icon){
+        mobileProject.append('file',payload.icon);
+    }
+    if(payload.appTitle){
+        mobileProject.append('appTitle',payload.appTitle);
+    }
+    if(payload.appSubtitle){
+        mobileProject.append('appSubtitle',payload.appSubtitle);
+    }
+    if(payload.appVersion){
+        mobileProject.append('appVersion',payload.appVersion);
+    }
+    if(payload.country){
+        mobileProject.append('country',payload.country);
+    }
+    if(payload.appType){
+        mobileProject.append('appType',payload.appType);
+    }
+    if(payload.priority){
+        mobileProject.append('priority',payload.priority);
+    }
+    if(payload.productType){
+        mobileProject.append('productType',payload.productType);
+    }
+    if(payload.appLive){
+        mobileProject.append('appLive',payload.appLive);
+    }
+    if(payload.appDemo){
+        mobileProject.append('appDemo',payload.appDemo);
+    }
+    if(payload.appStaging){
+        mobileProject.append('appStaging',payload.appStaging);
+    }
+    if(payload.appDevel){
+        mobileProject.append('appDevel',payload.appDevel);
+    }
+    if(payload.liveDate){
+        mobileProject.append('liveDate',payload.liveDate);
+    }
+    if(payload.demoDate){
+        mobileProject.append('demoDate',payload.demoDate);
+    }
+    if(payload.stagingDate){
+        mobileProject.append('stagingDate',payload.stagingDate);
+    }
+    if(payload.develDate){
+        mobileProject.append('develDate',payload.develDate);
+    }
+    if(payload.milestone){
+        mobileProject.append('milestone',payload.milestone);
+    }
+    if(payload.appStatus){
+        mobileProject.append('appStatus',payload.appStatus);
+    }
+    if(payload.liveLink){
+        mobileProject.append('liveLink',payload.liveLink);
+    }
+    if(payload.demoLink){
+        mobileProject.append('demoLink',payload.demoLink);
+    }
+    if(payload.stagingLink){
+        mobileProject.append('stagingLink',payload.stagingLink);
+    }
+    if(payload.develLink){
+        mobileProject.append('develLink',payload.develLink);
+    }
+      
     axios.put(apiEndpoint + 'mobileProjects/' + payload.projectID, mobileProject)
     .then((response) => {
-        commit('updateMobileProject', payload)
+        commit('updateMobileProject', {
+            ...payload,
+            iconPath:     response.data.path ? apiEndpoint + response.data.path : undefined,
+            stagingDate:  moment(payload.stagingDate).format('DD/MM/YYYY') === 'Invalid date' ? "&nbsp;" : moment(payload.stagingDate).format('DD/MM/YYYY'),
+            demoDate:     moment(payload.demoDate).format('DD/MM/YYYY') === 'Invalid date' ? "&nbsp;" : moment(payload.demoDate).format('DD/MM/YYYY'),
+            liveDate:     moment(payload.liveDate).format('DD/MM/YYYY') === 'Invalid date' ? "&nbsp;" : moment(payload.liveDate).format('DD/MM/YYYY'),
+            develDate:    moment(payload.develDate).format('DD/MM/YYYY') === 'Invalid date' ? "&nbsp;" : moment(payload.develDate).format('DD/MM/YYYY'),
+            
+        })
         commit('snackbar',{show: true, message: 'Project Updated'});
         commit('setLoading', false);
 
@@ -80,6 +133,8 @@ export default {
         commit('setLoading', false);
     })
   },
+
+
   createMobileProject({commit}, payload){
     commit('setLoading', true);
     let mobileProject = new FormData();

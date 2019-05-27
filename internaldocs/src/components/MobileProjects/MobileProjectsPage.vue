@@ -26,6 +26,10 @@ export default {
         return {
         }
     },
+     created () {
+    // console.log("before created")
+    this.$store.dispatch('getMobileProjects')
+  }
     
 }
 </script>
