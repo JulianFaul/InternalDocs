@@ -53,7 +53,14 @@
         width: 199px;
     }
 }
-
+.form-section__inline{
+    display: flex;
+    align-items: center;
+    padding: $xs-size 0;
+    div{
+        margin-right:$l-size;
+    }
+}
 .form-section__radio {
     margin: 10px 0px;
     width: 239px;

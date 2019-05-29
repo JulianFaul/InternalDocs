@@ -196,6 +196,11 @@ deleteMobileProject({commit, state}, payload){
         .catch((err) => {
             console.log(err)
         })
+
+        axios.delete(apiEndpoint + 'mobileProjects/' + projectID + '/storeinfo')
+        .catch((err) => {
+            console.log(err)
+        })
         // ---------------------------
         commit('deletemobileProject', projectID)
         commit('setLoading', false);

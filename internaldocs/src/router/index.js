@@ -20,6 +20,7 @@ import CreateMobileProjectsStatInfo from '../components/MobileProjectDetails/Mob
 import EditMobileProjectsStatInfo from '../components/MobileProjectDetails/MobileProjectStatsInfo/EditMobileProjectsStatInfo'
 
 import CreateMobileProjectStore from '../components/MobileProjectDetails/MobileProjectStore/CreateMobileProjectStore'
+import UpdateMobileProjectStore from '../components/MobileProjectDetails/MobileProjectStore/UpdateMobileProjectStore'
 
 Vue.use(Router)
 
@@ -107,6 +108,15 @@ export default new Router({
       component: CreateMobileProjectStore,
       props: true,
     },
+    {
+      path: '/store/:id/edit',
+      name: 'UpdateMobileProjectStore',
+      component: UpdateMobileProjectStore,
+      props: true,
+    },
+
+
+    
 
   ],
   mode: 'history'

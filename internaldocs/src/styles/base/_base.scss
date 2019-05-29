@@ -41,4 +41,6 @@ button:disabled {
   max-width: 100%;
   height: calc(100vh - 206px);
   overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #ffffff; 
 }

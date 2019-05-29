@@ -31,7 +31,17 @@
     background: red;
     color: $white;
 }
-
+.button__red-abosluteright{
+    position: absolute;
+    color: red !important;
+    font-size: $font-size-large;
+    right: 10px;
+}
+.button-abosluteright{
+    position: absolute;
+    font-size: $font-size-large;
+    right: 40px;
+}
 .button__sm-reset{
     @extend .button__red;
     padding: 2px 5px;

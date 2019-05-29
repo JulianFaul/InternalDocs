@@ -79,6 +79,7 @@ export default {
   created(){
     this.$store.dispatch('getAppSpecs', this.id)
     this.$store.dispatch('getStatInfo', this.id)
+    this.$store.dispatch('getStoreInfo', this.id)
   }
 };
 </script>
