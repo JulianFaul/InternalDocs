@@ -9,7 +9,7 @@ let MobileProjectInfoSchema = new mongoose.Schema({
     password:   String,
     createdAt:{
         type: Date,
-        default: Date.new
+        default: Date.now
       }
 });
 

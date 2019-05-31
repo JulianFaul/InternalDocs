@@ -77,8 +77,10 @@ exports.destroyAll = (req, res) => {
         }
         if(documents.length){
             for(var key in documents){
-                let documentPath = documents[key].path;
-                fs.unlinkSync(documentPath);
+                if(documents[key].path){
+                    let documentPath = documents[key].path;
+                    fs.unlinkSync(documentPath);
+                }
             }
         }
         AppSpecDoc.deleteMany({projectID: projectID}).then((result) => {

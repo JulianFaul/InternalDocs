@@ -9,11 +9,13 @@
             <v-icon style='vertical-align: middle;'>keyboard_backspace</v-icon>
           </router-link> 
             {{projectName}} Details</h1>
+            
       </div>
     </div>
     <v-tabs :value="getActiveTab" color="#00a09d" dark slider-color="#ffffff">
       <v-tab @click='setActiveTab(component.id)' v-for="component in myComponents" :key="component.id" ripple>
             {{ component.name }}
+            
       </v-tab>
 
       <v-tab-item  v-for="component in myComponents" :key="component.id">
@@ -32,7 +34,7 @@ import { mapGetters } from 'vuex';
 import MobileProjectSpecs from './MobileProjectSpecs/MobileProjectSpecs'
 import MobileProjectStatInfo from './MobileProjectStatsInfo/MobileProjectsStatInfo'
 import MobileProjectStore from './MobileProjectStore/MobileProjectStore'
-
+import MobileProjectMeetingNotes from './MobileProjectMeetingNotes/MobileProjectMeetingNotes'
 export default {
   props: ["id"],
   components: {
@@ -45,7 +47,8 @@ export default {
     VCardText,
     MobileProjectSpecs,
     MobileProjectStatInfo,
-    MobileProjectStore
+    MobileProjectStore,
+    MobileProjectMeetingNotes
   },
   name: "MobileProjectsDetailsPage",
   data() {
@@ -53,7 +56,8 @@ export default {
       myComponents:[
             {id:0, name:"App Specs", component:"MobileProjectSpecs"},
             {id:1, name:"Stats Info", component:"MobileProjectStatInfo"},
-            {id:2, name: "Store Details", component:"MobileProjectStore"}
+            {id:2, name: "Store Details", component:"MobileProjectStore"},
+            {id:3, name: "Meeting Notes", component:"MobileProjectMeetingNotes"}
         ]
     };
   },
@@ -76,10 +80,11 @@ export default {
       
     }
   },
-  created(){
+  mounted(){
     this.$store.dispatch('getAppSpecs', this.id)
     this.$store.dispatch('getStatInfo', this.id)
     this.$store.dispatch('getStoreInfo', this.id)
+    this.$store.dispatch('getMeetingNotes', this.id)
   }
 };
 </script>

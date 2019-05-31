@@ -36,11 +36,20 @@ button:disabled {
   height: calc(100vh - 188px);
   overflow-y: auto;
 }
-
+.v-btn {
+  pointer-events: all !important;
+}
+.v-tabs {
+  background: white;
+  height: 100vh;
+}
 .scroll-container__tabs {
   max-width: 100%;
-  height: calc(100vh - 206px);
+  height: calc(100vh - 243px);
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #ffffff; 
+  // background-color: #ffffff; 
+}
+.flex {
+  background: white;
 }

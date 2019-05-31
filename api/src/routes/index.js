@@ -4,6 +4,7 @@ module.exports = function(app) {
     const MobileProjectSpecs = require('./MobileProjectSpecs')
     const MobileProjectInfo = require('./MobileProjectInfo')
     const MobileProjectStoreInfo = require('./MobileProjectStoreInfo')
+    const MobileProjectsMeetingNote = require('./MobileProjectsMeetingNote')
     const AppSpecDocs = require('./AppSpecDocs')
     MobileProjects(app)
     InternalDocuments(app)
@@ -11,4 +12,5 @@ module.exports = function(app) {
     AppSpecDocs(app)
     MobileProjectInfo(app)
     MobileProjectStoreInfo(app)
+    MobileProjectsMeetingNote(app)
 }

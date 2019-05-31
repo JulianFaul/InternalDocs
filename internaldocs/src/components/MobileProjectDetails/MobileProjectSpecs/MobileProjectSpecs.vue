@@ -2,11 +2,13 @@
   <div class="MobileProjectSpecs">
  
       <loading-page v-if='loading'></loading-page>
-      <div style='position: absolute;top: -103px;right: 0px;width: 100%;'>
-        <router-link v-if="isEmpty" :to="'/details/'+ projectID +'/edit/' + loadedAppSpecs.specID" style="position:absolute; top:7px; right:0px;" class="button button__green">Edit App Spec</router-link>
-        <router-link v-else :to="'/details/'+ projectID +'/create'" style="position:absolute;top:7px; right:0px;" class="button button__blue">Create New Spec</router-link>
-      </div>
-   <div class='scroll-container__tabs' v-if="isEmpty">
+   
+    <v-list class="">
+        <EditMobileProjectSpec v-if="isEmpty" :projectID='projectID' :projectDetailsData='formatedAppSpecs' >Edit App Spec</EditMobileProjectSpec>
+        <CreateMobileProjectSpec v-else :projectID='projectID' ></CreateMobileProjectSpec>
+   </v-list>
+   <div class='scroll-container__tabs'>
+    
    <v-list v-if="isEmpty" class="document-list__group">
         <v-list-tile v-if="loadedAppSpecs.usedBy.length" class="document-list__item">
             <v-list-tile-content>
@@ -190,22 +192,15 @@
 import { mapGetters } from 'vuex';
 import LoadingPage from '../../LoadingPage/LoadingPage';
 import moment from 'moment'
-import {VIcon, VSpacer,VDivider,VSubheader,VLayout, VList, VListTileContent, VListTileTitle, VListTileSubTitle, VListTile} from 'vuetify/lib';
+import CreateMobileProjectSpec from './CreateMobileProjectSpec'
+import EditMobileProjectSpec from './EditMobileProjectSpec'
 export default {
   name: 'MobileProjectSpecs',
   props:["projectID"],
   components:{
     LoadingPage,
-    VDivider,
-    VSubheader,
-    VLayout,
-    VList,
-    VListTile,
-    VListTileContent,
-    VListTileTitle,
-    VListTileSubTitle,
-    VSpacer,
-    VIcon
+    CreateMobileProjectSpec,
+    EditMobileProjectSpec
   },
   data () {
     return {
@@ -223,6 +218,36 @@ export default {
     }
   },
   computed: {
+      formatedAppSpecs(){
+          let docs = this.loadedAppSpecs.appspecdocs;
+          let existingPricelists = [];
+          let existingRepFiles = [];
+          let existingStatusFiles = [];
+          let existingCustomerFiles = [];
+          for(let key in docs){
+              let doc = docs[key];
+              let header = docs[key].header
+              if(header === 'Pricelist Files'){
+                  existingPricelists.push(doc)
+              }
+              if(header === 'Rep Files'){
+                  existingRepFiles.push(doc)
+              }
+              if(header === 'Status Files'){
+                  existingStatusFiles.push(doc)
+              }
+              if(header === 'Customer Files'){
+                  existingCustomerFiles.push(doc)
+              }
+          }
+             return {
+                ...this.loadedAppSpecs,
+                existingPricelists,
+                existingRepFiles,
+                existingStatusFiles,
+                existingCustomerFiles
+              }
+      },
     isEmpty() {
     for(var prop in  this.loadedAppSpecs) {
         if(this.loadedAppSpecs.hasOwnProperty(prop))

@@ -6,6 +6,7 @@ import MobileProjects from './modules/MobileProjects'
 import MobileProjectSpecs from './modules/MobileProjectSpecs'
 import MobileProjectInfo from './modules/MobileProjectInfo'
 import MobileProjectStoreInfo from './modules/MobileProjectStoreInfo'
+import MobileProjectMeetingNotes from './modules/MobileProjectMeetingNotes'
 
 import InternalDocuments from './modules/InternalDocuments'
 import Shared from './modules/Shared'
@@ -20,8 +21,9 @@ export default new Vuex.Store({
     MobileProjectSpecs,
     MobileProjectInfo,
     MobileProjectStoreInfo,
+    MobileProjectMeetingNotes,
     InternalDocuments,
     Shared
   },
-  // plugins: [createPersistedState()],
+  plugins: [createPersistedState()],
 })

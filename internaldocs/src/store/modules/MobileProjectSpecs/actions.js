@@ -59,7 +59,7 @@ export default {
         })
   },
 
-  createAppSpecs({commit}, payload){
+  createAppSpecs({commit,dispatch}, payload){
     commit('setLoading', true);
     const projectID = payload.projectID;
     let specDetails = {}
@@ -113,6 +113,7 @@ export default {
                     specID: obj[key].specID,             
                 })
             }
+            console.log(obj)
         })
         .catch((err) => {
             console.log(err)
@@ -124,6 +125,7 @@ export default {
             ...specDetails,
             appspecdocs: appspecdocs
         })
+        dispatch('getAppSpecs', projectID)
         commit('setLoading', false);
        
     })
@@ -133,10 +135,10 @@ export default {
     })
   },
 
-  updateAppSpecs({commit, getters}, payload){
+  updateAppSpecs({commit, getters, dispatch}, payload){
     commit('setLoading', true);
+    const specID = payload.specID;
     const projectID = payload.projectID;
-    const specID    = payload.specID;
     let specDetails = {}
         specDetails.usedBy                  = payload.usedBy
         specDetails.devices                 = payload.devices
@@ -199,6 +201,7 @@ export default {
             ...specDetails,
             appspecdocs: appspecdocs
         })
+        dispatch('getAppSpecs', projectID)
         commit('setLoading', false);
        
     })

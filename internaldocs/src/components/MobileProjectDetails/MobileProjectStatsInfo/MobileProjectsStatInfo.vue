@@ -1,12 +1,13 @@
 <template>
     <div class="MobileProjectStatsInfo">
         <loading-page v-if='loading'></loading-page>
-        <div style='position: absolute;top: -103px;right: 0px;width: 100%;'>
-            <router-link v-if='isEmpty' :to="'/stat/' + projectID + '/edit/' + loadedAppInfo._id" style="position:absolute; top:7px; right:0px;" class="button button__green">Edit App Spec</router-link>
-            <router-link v-else :to="{name: 'CreateMobileProjectsStatInfo'}" style="position:absolute; top:7px; right:0px;" class="button button__blue">Create New Stat Info</router-link>
-        </div>
-        <div v-if='isEmpty' class='scroll-container__tabs'>
+    
+        <div class='scroll-container__tabs'>
             <v-list class="document-list__group">
+                <EditMobileProjectsStatInfo :projectID='projectID' :appInfo="loadedAppInfo" v-if='isEmpty'></EditMobileProjectsStatInfo>
+                <CreateMobileProjectsStatInfo v-else :projectID='projectID'></CreateMobileProjectsStatInfo>
+            </v-list>
+            <v-list v-if='isEmpty'>
                 <v-list-tile class="document-list__item">
                     <v-list-tile-content>
                         <v-list-tile-title ><b>URL</b></v-list-tile-title>
@@ -42,20 +43,14 @@
 <script>
 import { mapGetters } from 'vuex';
 import LoadingPage from '../../LoadingPage/LoadingPage';
-import { VSpacer,VDivider,VSubheader,VLayout, VList, VListTileContent, VListTileTitle, VListTileSubTitle, VListTile} from 'vuetify/lib';
+import EditMobileProjectsStatInfo from './EditMobileProjectsStatInfo'
+import CreateMobileProjectsStatInfo from './CreateMobileProjectsStatInfo'
 export default {
     props:["projectID"],
     components:{
         LoadingPage,
-        VDivider,
-        VSubheader,
-        VLayout,
-        VList,
-        VListTile,
-        VListTileContent,
-        VListTileTitle,
-        VListTileSubTitle,
-        VSpacer
+        EditMobileProjectsStatInfo,
+        CreateMobileProjectsStatInfo
     },
     data () {
         return {

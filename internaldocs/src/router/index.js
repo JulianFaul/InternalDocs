@@ -12,15 +12,13 @@ import DocumentsPage from '../components/InternalDocuments/DocumentsPage'
 import CreateDocumentPage from '../components/InternalDocuments/CreateDocumentPage'
 
 import MobileProjectDetails from '../components/MobileProjectDetails/MobileProjectDetailsPage'
-import CreateMobileProjectSpec from '../components/MobileProjectDetails/MobileProjectSpecs/CreateMobileProjectSpec'
-import EditMobileProjectSpec from '../components/MobileProjectDetails/MobileProjectSpecs/EditMobileProjectSpec'
-
 
 import CreateMobileProjectsStatInfo from '../components/MobileProjectDetails/MobileProjectStatsInfo/CreateMobileProjectsStatInfo'
-import EditMobileProjectsStatInfo from '../components/MobileProjectDetails/MobileProjectStatsInfo/EditMobileProjectsStatInfo'
 
 import CreateMobileProjectStore from '../components/MobileProjectDetails/MobileProjectStore/CreateMobileProjectStore'
 import UpdateMobileProjectStore from '../components/MobileProjectDetails/MobileProjectStore/UpdateMobileProjectStore'
+
+import CreateMobileProjectMeetingNote from '../components/MobileProjectDetails/MobileProjectMeetingNotes/CreateMobileProjectMeetingNote'
 
 Vue.use(Router)
 
@@ -79,27 +77,9 @@ export default new Router({
       props: true,
     },
     {
-      path: '/details/:id/create',
-      name: 'CreateMobileProjectSpec',
-      component: CreateMobileProjectSpec,
-      props: true,
-    },
-    {
-      path: '/details/:id/edit/:specID',
-      name: 'EditMobileProjectSpec',
-      component: EditMobileProjectSpec,
-      props: true,
-    },
-    {
       path: '/stat/:id/create',
       name: 'CreateMobileProjectsStatInfo',
       component: CreateMobileProjectsStatInfo,
-      props: true,
-    },
-    {
-      path: '/stat/:id/edit/:infoID',
-      name: 'EditMobileProjectsStatInfo',
-      component: EditMobileProjectsStatInfo,
       props: true,
     },
     {
@@ -109,11 +89,21 @@ export default new Router({
       props: true,
     },
     {
-      path: '/store/:id/edit',
+      path: '/store/:id/edit/:storeInfoID',
       name: 'UpdateMobileProjectStore',
       component: UpdateMobileProjectStore,
       props: true,
     },
+
+    {
+      path: '/notes/:id/create',
+      name: 'CreateMobileProjectMeetingNote',
+      component: CreateMobileProjectMeetingNote,
+      props: true,
+    },
+
+
+    
 
 
     

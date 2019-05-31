@@ -179,7 +179,7 @@ export default {
         this.editIcon = image;
         },
         deleteMobileProject(){
-            this.$store.dispatch('deleteMobileProject', {projectID : this.projectID, specID: this.loadedAppSpecs.specID})
+            this.$store.dispatch('deleteMobileProject', this.projectID)
             this.$router.push('/mobileprojects');
         },
         onSubmit() {

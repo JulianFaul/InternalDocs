@@ -23,7 +23,7 @@ export default {
         })
     },
 
-    createStatInfo({commit}, payload){
+    createStatInfo({commit,dispatch}, payload){
         commit('setLoading', true);
         let projectID = payload.projectID
         axios.post(apiEndpoint + 'mobileProjects/' + projectID + '/info', payload.data)
@@ -34,13 +34,14 @@ export default {
             }
             commit('createStatInfo', info);
             commit('setLoading', false);
+            dispatch("getStatInfo", projectID)
         })
         .catch((err) => {
             commit('setLoading', false);
             console.log(err)
         })
     },
-    updateStatInfo({commit}, payload){
+    updateStatInfo({commit,dispatch}, payload){
         commit('setLoading', true);
         let projectID = payload.projectID;
         let infoID = payload.infoID
@@ -59,6 +60,7 @@ export default {
             commit('updateInfo', payload.data);
             commit('snackbar',{show: true, message: 'Info Updated'});
             commit('setLoading', false);
+            dispatch("getStatInfo", projectID)
         })
         .catch((err) => {
             commit('setLoading', false);

@@ -1,49 +1,60 @@
 <template>
-    <div>
-        <div class='content-container'>
-            <div class='title-container'>
-               <h1 class='title-container__title'>
-                     <router-link :to="'/details/' + id">
-                    <v-icon style='vertical-align: middle;'>keyboard_backspace</v-icon>
-                </router-link>Edit Stat Info</h1>
-            </div>
-        </div>
-        <div class='scroll-container'>
-            <div class='content-container'>
-                <MobileProjectStatForm :formMode="formMode" :statInfoData="loadedAppInfo" :buttonText='buttonText' @onSubmit="onSubmit"></MobileProjectStatForm>
-            </div>
-        </div>
-    </div>
+    <v-dialog v-model="dialog" scrollable max-width="1200px">
+      <template v-slot:activator="{ on }">
+        <button style='float:right' class='button button__green' v-on="on">Edit Info</button>
+      </template>
+      <v-card>
+        <v-card-title>Stats Info Edit
+          <button class='button button__green' flat @click="onSubmit">Save</button>
+            <v-spacer></v-spacer>
+             <v-icon flat @click="dialog = false">close</v-icon>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text style="height: 300px;">
+            <v-text-field name='url' id='url' v-model='editedUrl' label='URL'></v-text-field>
+            <v-text-field name='Username' id='Username' v-model='editedUsername' label='Username'></v-text-field>
+            <v-text-field name='Password' id='Password' v-model='editedPassword' label='Password'></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+     
+      </v-card>
+    </v-dialog>
+
 </template>
 
 <script>
 
-import MobileProjectStatForm from './MobileProjectStatForm';
+
 import {VIcon} from "vuetify/lib";
 import { mapGetters } from 'vuex';
 export default {
-  name: 'CreateMobileProjectsStatInfo',
-  props: ["id"],
+  name: 'EditMobileProjectsStatInfo',
+  props: ["projectID","appInfo"],
   components:{
-      MobileProjectStatForm,
       VIcon
   },
   data () {
     return {
-        buttonText: 'Update Info',
-        formMode: 'edit'
+        dialog: false,
+        formMode: 'edit',
+        editedUrl:      this.appInfo.url,
+        editedUsername: this.appInfo.username,
+        editedPassword: this.appInfo.password,
     }
   },
   computed:{
-       ...mapGetters([
-        'loadedAppInfo',
-        'loading'
-    ]),
+
+    
   },
   methods: {
-        onSubmit(payload) {
-        this.$store.dispatch("updateStatInfo", {projectID: this.id, infoID:this.loadedAppInfo._id , data: payload})
-        // this.$router.push('/details/' + this.id)
+        onSubmit() {
+        this.$store.dispatch("updateStatInfo", {projectID: this.projectID, infoID:this.appInfo._id , data: {
+        url:      this.editedUrl,
+        username: this.editedUsername,
+        password: this.editedPassword,
+        }})
+        this.dialog = false
+   
     }
   }
 }

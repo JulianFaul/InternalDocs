@@ -65,7 +65,6 @@
                          <v-text-field name="whatsnew" id="whatsnew" v-model='ewhatsnew' label='Whats new'></v-text-field>
                         </div>
                     </div> 
-                     
                 </div>
             </div>
         </div>
@@ -78,7 +77,7 @@ import moment from 'moment';
 export default {
     
   name: 'UpdateMobileProjectsStatInfo',
-  props: ["id","storeDetails"],
+  props: ["storeInfoID","id"],
   components:{
       Datepicker
   },
@@ -89,20 +88,23 @@ export default {
         deviceList: ['Desktop', 'Tablets', 'Phones'],
         appTypes: ["Android", "IOS"],
 
-        eappType:        this.storeDetails.appType,
-        enameOnStore:    this.storeDetails.nameOnStore,
-        edevices:        this.storeDetails.devices,
-        edateSubmitted:  this.storeDetails.dateSubmitted,
-        edatePublished:  this.storeDetails.datePublished,
-        eversion:        this.storeDetails.version,
-        ewhatsnew:       this.storeDetails.whatsnew,
-        estoreLink:      this.storeDetails.storeLink
+        eappType:        this.storeDetails().appType,
+        enameOnStore:    this.storeDetails().nameOnStore,
+        edevices:        this.storeDetails().devices,
+        edateSubmitted:  this.storeDetails().dateSubmitted,
+        edatePublished:  this.storeDetails().datePublished,
+        eversion:        this.storeDetails().version,
+        ewhatsnew:       this.storeDetails().whatsnew,
+        estoreLink:      this.storeDetails().storeLink
     }
   },
   computed:{
-      
+    
   },
   methods: {
+      storeDetails(){
+        return this.$store.getters.loadedStoreInfoSingle(this.storeInfoID)
+    },
       customFormatter(date) {
             return moment(date).format('dddd, MMMM Do YYYY');
         },
@@ -119,7 +121,7 @@ export default {
             storeLink:      this.estoreLink
         })
         let vm = this;
-        setTimeout(function(){ vm.$router.push("/details/" + vm.id) }, 5);
+        setTimeout(function(){ vm.$router.push("/details/" + vm.id) }, 10);
         
        
     }

@@ -2,7 +2,6 @@ const MobileProjectInfo = require('../models/MobileProjectInfo.model');
 
 
 exports.index = (req, res) => {
-    console.log(req.params)
     MobileProjectInfo.findOne({projectID: req.params.id}, (err, projectInfo) => {
         if(err){
             return res.status(404).send(projectInfo);
@@ -29,15 +28,15 @@ exports.create = (req, res) => {
 exports.update = (req, res) => {
     MobileProjectInfo.findById({_id:req.params.infoID}, (err, info) => {
         if(req.body !== undefined) {
-            if(req.body.url){
+         
                 info.url = req.body.url;
-            }
-            if(req.body.username){
+        
+    
                 info.username = req.body.username;
-            }
-            if(req.body.password){
+         
+           
                 info.password = req.body.password;
-            }
+            
             
         }
         if(req.body.completed !== undefined) {

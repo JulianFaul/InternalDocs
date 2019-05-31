@@ -10,7 +10,7 @@
         >
         <template v-slot:items="props">
             <td class="text-xs-center">
-            <router-link class="link" :to="{name: 'EditMobileProjectPage', params: {projectID: props.item.id, project: props.item}}">
+            <router-link  class="link" :to="{name: 'EditMobileProjectPage', params: {projectID: props.item.id, project: props.item}}">
               <v-icon small class="text-xs-center">
                   edit
               </v-icon>
@@ -22,7 +22,7 @@
             </td>
             <td class='project-name'>
                 <div class='project-name__title'>{{props.item.appTitle}}</div>
-                <div class='project-name__link'><router-link :to="'details/' + props.item.id">Details</router-link></div>
+                <div @click="setActiveTab()"  class='project-name__link'><router-link :to="'details/' + props.item.id">Details</router-link></div>
             </td>
             <td class="text-xs-center">{{props.item.appType}}</td>
             <td class="text-xs-center" :class='getClass(props.item.appStatus)'>
@@ -105,6 +105,10 @@ export default {
       ]
       }),
       methods:{
+        setActiveTab(){
+          console.log("here")
+          this.$store.dispatch('setActiveTab', 0)
+        },
         selectedAlphabeticalFilterOption(option) {
             this.alphabeticalFilterOption = option;
         },

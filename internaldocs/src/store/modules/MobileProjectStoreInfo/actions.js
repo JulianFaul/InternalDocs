@@ -4,8 +4,7 @@ const apiEndpoint = process.env.API_URL;
 
 
 export default {
-    createStoreInfo({commit}, payload){
-
+    createStoreInfo({commit,dispatch}, payload){
         commit('setLoading', true);
         axios.post(apiEndpoint + "mobileProjects/" + payload.projectID + "/storeinfo", payload)
         .then((response) => {
@@ -26,6 +25,7 @@ export default {
             commit('createStoreInfo', storeInfo)
             commit('snackbar',{show: true, message: 'Store Info Created'});
             commit('setLoading', false);
+            dispatch('getStoreInfo', payload.projectID)
         })
         .catch((err) => {
             commit('setLoading', false);

@@ -135,7 +135,7 @@ export default {
   },
 
 
-  createMobileProject({commit}, payload){
+  createMobileProject({commit,dispatch}, payload){
     commit('setLoading', true);
     let mobileProject = new FormData();
         mobileProject.append('file',               payload.icon);
@@ -166,7 +166,7 @@ export default {
                 ...response.data,
                 id: response.data._id
             })
-            
+            dispatch("getMobileProjects");
             commit('setLoading', false);
         })
         .catch((err) => {
@@ -174,10 +174,8 @@ export default {
         })
   },
 
-deleteMobileProject({commit, state}, payload){
+deleteMobileProject({commit, dispatch}, projectID){
     commit('setLoading', true);
-    const projectID = payload.projectID;
-    const specID = payload.specID;
     axios.delete(apiEndpoint + 'mobileProjects/' + projectID)
     .then((response) => {
         // ---------------------------
@@ -186,12 +184,11 @@ deleteMobileProject({commit, state}, payload){
             console.log(err)
         })
         // ---------------------------
-        if(specID){
-            axios.delete(apiEndpoint + 'mobileProjects/' + projectID + '/specs/' + specID)
-            .catch((err) => {
-                console.log(err)
-            })
-        }
+        axios.delete(apiEndpoint + 'mobileProjects/' + projectID + '/specs')
+        .catch((err) => {
+            console.log(err)
+        })
+        
         axios.delete(apiEndpoint + 'mobileProjects/' + projectID + '/info')
         .catch((err) => {
             console.log(err)
@@ -202,9 +199,14 @@ deleteMobileProject({commit, state}, payload){
             console.log(err)
         })
         // ---------------------------
+        
+    })
+    .then(() => {
         commit('deletemobileProject', projectID)
+        dispatch('getMobileProjects')
         commit('setLoading', false);
-    }).catch((err) => {
+    })
+    .catch((err) => {
         commit('setLoading', false);
         console.log(err)
     })

@@ -1,20 +1,19 @@
 <template>
-    <div>
-        <div class='content-container'>
-            <div class='title-container'>
-               <h1 class='title-container__title'>
-                     <router-link :to="'/details/' + id">
-                    <v-icon style='vertical-align: middle;'>keyboard_backspace</v-icon>
-                </router-link>Create</h1>
-                <button type="submit" @click='onSubmit' class="button button__blue">{{buttonText}}</button>
-            </div>
-        </div>
-        <div class='scroll-container'>
+<v-dialog v-model="dialog" scrollable max-width="1200px">
+      <template v-slot:activator="{ on }">
+        <button style='float:right' class='button button__blue' v-on="on">Create New Store Details</button>
+      </template>
+      <v-card>
+        <v-card-title>Store Details
+           <button class='button button__green' flat @click="onSubmit">Save</button>
+            <v-spacer></v-spacer>
+            <v-icon flat @click="dialog = false">close</v-icon>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text>
+       
             <div class='content-container'>
                 <div class='form' v-on:submit.prevent>
-
-                    
-
                     <div class='form-section'>
                         <h4 class='form-section__title'>App Type</h4>
                         <div class='form-section__details'>
@@ -72,22 +71,26 @@
                      
                 </div>
             </div>
-        </div>
-    </div>
+
+        </v-card-text>
+        <v-divider></v-divider>
+       
+      </v-card>
+    </v-dialog>
 </template>
 
 <script>
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 export default {
-    
   name: 'CreateMobileProjectsStatInfo',
-  props: ["id"],
+  props: ["projectID"],
   components:{
       Datepicker
   },
   data () {
     return {
+        dialog:false,
         buttonText: 'Create App on Store',
         formMode: 'create',
         deviceList: ['Desktop', 'Tablets', 'Phones'],
@@ -110,9 +113,9 @@ export default {
       customFormatter(date) {
             return moment(date).format('dddd, MMMM Do YYYY');
         },
-        onSubmit(payload) {
+        onSubmit() {
         this.$store.dispatch("createStoreInfo", {
-            projectID:      this.id,
+            projectID:      this.projectID,
             appType:        this.appType,
             nameOnStore:    this.nameOnStore,
             devices:        this.devices,
@@ -122,8 +125,7 @@ export default {
             whatsnew:       this.whatsnew,
             storeLink:      this.storeLink
         })
-        let vm = this;
-        setTimeout(function(){ vm.$router.push("/details/" + vm.id) }, 5);
+        this.dialog=false
         
        
     }

@@ -76,8 +76,8 @@ exports.showFiles = (req, res) => {
 }
 
 exports.destroy = (req, res) => {
-    const specID = req.params.specID
-    ProjectSpec.deleteOne({_id: specID})
+    const projectID = req.params.id
+    ProjectSpec.deleteOne({projectID: projectID})
         .then(result => {
            res.status(200).json({
                message: 'Project Specs has been deleted' 
