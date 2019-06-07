@@ -21,7 +21,7 @@ module.exports = (app) => {
     app.route('/specfiles/:docID')
         .get(controller.show)
         .delete(controller.destroy)
-       
+        .put(upload.single('file'), controller.update)
 
     app.route('/specfiles')
         .delete(controller.destroyAll)

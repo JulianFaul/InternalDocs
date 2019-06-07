@@ -4,8 +4,10 @@
         <button style='float:right' class='button button__blue' v-on="on">Create New Spec</button>
       </template>
       <v-card  >
+          
         <v-card-title>Create New Stat Info
              <button class='button button__green' flat @click="onSubmit">Save</button>
+             <button class='button button__green' flat @click="closeDialog()">Cancel</button>
             <v-spacer></v-spacer>
             <v-icon flat @click="dialog = false">close</v-icon>
         </v-card-title>
@@ -14,19 +16,44 @@
            <div class='form-section'>
             <h3 class='form-section__title'>Product Type: {{productType}}</h3>
         </div>
-        <div v-if="productType == 'MyQuote'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App'" class='form-section'>
             <h4 class='form-section__title'>App will be used by: <button v-if='usedBy.length' @click="resetUsedBy" class="button button__sm-reset">Reset</button></h4>
-            <v-checkbox class='form-section__checkbox' v-for="(option, index) in usedByList" :key="index" :label='option' :value="option" v-model="usedBy"></v-checkbox>
+            <v-checkbox @change='setRepDate()' class='form-section__checkbox' v-for="(option, index) in usedByList" :key="index" :label='option' :value="option" v-model="usedBy"></v-checkbox>
         </div>
 
-        <div v-if="productType == 'MyQuote' || productType == 'MySpec'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' || productType == 'MySpec'" class='form-section'>
             <h4 class='form-section__title'>Devices: <button v-if='devices.length' @click="resetDevices" class="button button__sm-reset">Reset</button></h4>
             <v-checkbox class='form-section__checkbox' v-for="(option, index) in devicesList" :key="index" :label='option' :value="option" v-model="devices"></v-checkbox>
         </div>
        
         <div v-if='devices.includes("Tablets") || devices.includes("Phones")' class='form-section'>
             <h4 class='form-section__title'>App can be found on stores: <button v-if='stores.length' @click="resetStores" class="button button__sm-reset">Reset</button></h4>
-             <v-checkbox class='form-section__checkbox' v-for="(option, index) in storesList" :key="index" :label='option' :value="option" v-model="stores"></v-checkbox>
+             <v-checkbox  @change='changeStores()' class='form-section__checkbox' v-for="(option, index) in storesList" :key="index" :label='option' :value="option" v-model="stores"></v-checkbox>
+        </div>
+        
+       
+        <div v-if="productType == 'Generic Blinds App' " class='form-section'>
+            <h4 class='form-section__title'>Requires Ecommerce?</h4>
+             <v-radio-group @change='setEcommerceDate' v-model="ecommerce" row>
+                <v-radio label="Yes" :value="true"></v-radio>
+                <v-radio label="No" :value="false"></v-radio>
+            </v-radio-group>
+        </div>
+
+        <div v-if="productType == 'Generic Blinds App' " class='form-section'>
+            <h4 class='form-section__title'>Libraries to be Included:</h4>
+         </div>
+
+        <div v-if="productType == 'Generic Blinds App'"  class='form-section form-section__sub'>
+            <h4 class='form-section__title'>Taylor Blinds:</h4>
+                <v-checkbox class='' v-model='selectAllTaylor' @change='selectAllTaylorOptions' label='All'></v-checkbox>
+                <v-checkbox @change='checkAllTaylor(selectedTaylorBlinds.length)' class='form-section__checkbox' v-for="(option, index) in TaylorBlinds" :key="index" :label='option' :value="option" v-model="selectedTaylorBlinds"></v-checkbox>
+        </div>
+
+        <div v-if="productType == 'Generic Blinds App'"  class='form-section form-section__sub'>
+            <h4 class='form-section__title'>Luxaflex:</h4> 
+                <v-checkbox class='' v-model='selectAllLuxaflex' @change='selectAllLuxaflexOptions' label='All'></v-checkbox>
+                <v-checkbox @change='checkAllLuxaflex(selectedLuxaflex.length)' class='form-section__checkbox' v-for="(option, index) in Luxaflex" :key="index" :label='option' :value="option" v-model="selectedLuxaflex"></v-checkbox>
         </div>
 
         <div class='form-section'>
@@ -34,7 +61,7 @@
             <v-select :items="selectedGeneratedDocs" label="Generated Document" v-model='generatedDoc'></v-select>
         </div>
        
-        <div v-if="productType == 'MyQuote'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' " class='form-section'>
             <h4 class='form-section__title'>Multiple Pricelists?</h4>
              <v-radio-group @change='setMultiPricelistDate' v-model="multiPricelist" row>
                 <v-radio label="Yes" :value="true"></v-radio>
@@ -56,7 +83,7 @@
             </div>
         </div>
 
-        <div v-if="productType == 'MyQuote'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' " class='form-section'>
             <h4 class='form-section__title'>Do you have set statuses?</h4>
              <v-radio-group @change='changeSetStatusDate' v-model="setStatus" row>
                 <v-radio label="Yes" :value="true"></v-radio>
@@ -78,7 +105,7 @@
         </div>
 
 
-        <div v-if="productType == 'MyQuote' && usedBy.includes('Reps')" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' && usedBy.includes('Reps')" class='form-section'>
             <h4 class='form-section__title'>List of Reps</h4>
             <input style="display:none;" type="file" v-on:change="onFileSelected($event, 'Rep Files')" ref="onListofRepsSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofRepsSelected.click()">Upload List of Reps</button>
@@ -91,7 +118,7 @@
         </div>
 
 
-        <div v-if="productType == 'MyQuote' && usedBy.includes('Customers')" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' && usedBy.includes('Customers')" class='form-section'>
             <h4 class='form-section__title'>List of Customers</h4>
             <input style="display:none;" type="file" v-on:change="onFileSelected($event, 'Customer Files')" ref="onListofCustomersSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofCustomersSelected.click()">Upload List of Customers</button>
@@ -189,16 +216,27 @@ export default {
         customersSelected: false,
         statusSelected: false,
         pricelistSelected: false,
+        
         usedByList: ['Public', 'Reps', 'Customers'],
         devicesList: ['Desktop', 'Tablets', 'Phones'],
         storesList: ['iTunes', 'Google Play'],
+
+        selectAllTaylor: false,
+        selectAllLuxaflex: false,
+        TaylorBlinds:  ['Woven blinds','Vertical blinds','Roller blinds','Shutters'],
+        Luxaflex:      ['Roller blinds','Fabric blinds','Vertical blinds'],
+
         generatedDocs: ['Estimate', 'Quote', 'Credit Note', 'Specification'],
         dialog:false,
         usedBy:                     [],
         devices:                    [],
         stores:                     [],
+        selectedTaylorBlinds:       [],
+        selectedLuxaflex:           [],
         generatedDoc:               '',
         multiPricelist:             false,
+        ecommerce:                  false,
+        ecommerceDate:              '',
         multiPricelistDate:         '',
         priceListDetails:           '',
         setStatus:                  false,
@@ -216,9 +254,13 @@ export default {
     }
   },
   computed:{
+      ...mapGetters([
+        'user'
+    ]),
       productType(){
          return this.$store.getters.loadedProject(this.projectID).productType;
       },
+      
         selectedGeneratedDocs(){
             if(this.productType == 'MySpec'){
                 this.generatedDocs = ['Specification'];
@@ -230,6 +272,68 @@ export default {
         }
   },
   methods:{
+      closeDialog(){
+        this.dialog = false;
+        this.usedBy=                     [],
+        this.devices=                  [],
+        this.stores=                    [],
+        this.selectedTaylorBlinds=       [],
+        this.selectedLuxaflex=           [],
+        this.generatedDoc=              '',
+        this.multiPricelist=             false,
+        this.ecommerce=                 false,
+        this.ecommerceDate=              '',
+        this.multiPricelistDate=         '',
+        this.priceListDetails=          '',
+        this.setStatus=                false,
+        this.setStatusDate=             '',
+        this.setStatusDetails=          '',
+        this.maintenanceContactName=     '',
+        this.maintenanceContactEmail=    '',
+        this.quoteRequestDetails=      [],
+        this.contactMeDetails=          [],
+        this.specialComments=            '',
+        this.setRepsDate=               '',
+        this.dueDate=                   '',
+        this.files=                     []
+      },
+        changeStores(){
+          if(!this.devices.length){
+              this.stores = [];
+          }
+      },
+        checkAllLuxaflex(length){
+          if(length === this.Luxaflex.length){
+              this.selectAllLuxaflex = true
+          }else{
+              this.selectAllLuxaflex =  false;
+          }
+          
+      },
+        selectAllLuxaflexOptions(){
+            this.selectedLuxaflex = [];
+            if(this.selectAllLuxaflex){
+                for(let item in this.Luxaflex){
+                    this.selectedLuxaflex.push(this.Luxaflex[item])
+                }
+            }
+        },
+      checkAllTaylor(length){
+          if(length === this.TaylorBlinds.length){
+              this.selectAllTaylor = true
+          }else{
+              this.selectAllTaylor =  false;
+          }
+          
+      },
+        selectAllTaylorOptions(){
+            this.selectedTaylorBlinds = [];
+            if(this.selectAllTaylor){
+                for(let item in this.TaylorBlinds){
+                    this.selectedTaylorBlinds.push(this.TaylorBlinds[item])
+                }
+            }
+        },
         deleteFile(doc){
             this.$store.dispatch('deleteDocument', doc.id)
         },
@@ -291,6 +395,16 @@ export default {
             this.quoteRequestEmail = '';
             this.quoteRequestRegion = '';
         },
+        setRepDate() {
+            if(this.usedBy.includes('Reps')){
+                this.setRepsDate = moment().format();
+            }else{
+                this.setRepsDate = '';
+            }
+        },
+        setEcommerceDate(){
+            this.ecommerceDate = moment().format();
+        },
         setMultiPricelistDate(){
             this.multiPricelistDate = moment().format();
         },
@@ -311,7 +425,7 @@ export default {
             }
             for( var i = 0; i < files.length; i++ ){
                 files[i].header = header;
-                this.setRepsDate = moment().format();
+                
                 this.files.push( files[i] );
             }
         },
@@ -336,11 +450,16 @@ export default {
         },
         onSubmit(){
             let payload = {
+                userID:                     this.user.id,
                 projectID:                  this.projectID,
                 usedBy:                     this.usedBy,
                 devices:                    this.devices,
                 stores:                     this.stores,
+                luxaflex:                   this.selectedLuxaflex,
+                taylorBlinds:               this.selectedTaylorBlinds,
                 generatedDoc:               this.generatedDoc,
+                ecommerceDate:              this.ecommerceDate,
+                ecommerce:                  this.ecommerce,
                 multiPricelist:             this.multiPricelist,
                 multiPricelistDate:         this.multiPricelistDate,
                 priceListDetails:           this.priceListDetails,

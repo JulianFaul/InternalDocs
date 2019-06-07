@@ -16,14 +16,14 @@
         </div>
    
 
-        <div v-if="productType == 'MyQuote'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App'" class='form-section'>
             <h4 class='form-section__title'>App will be used by: <button v-if='usedBy.length' @click="resetUsedBy" class="button button__sm-reset">Reset</button></h4>
-            <v-checkbox class='form-section__checkbox' v-for="(option, index) in usedByList" :key="index" :label='option' :value="option" v-model="usedBy"></v-checkbox>
+            <v-checkbox @change='setRepDate()' class='form-section__checkbox' v-for="(option, index) in usedByList" :key="index" :label='option' :value="option" v-model="usedBy"></v-checkbox>
         </div>
 
-        <div v-if="productType == 'MyQuote' || productType == 'MySpec'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'MySpec' || productType == 'Generic Blinds App'" class='form-section'>
             <h4 class='form-section__title'>Devices: <button v-if='devices.length' @click="resetDevices" class="button button__sm-reset">Reset</button></h4>
-            <v-checkbox class='form-section__checkbox' v-for="(option, index) in devicesList" :key="index" :label='option' :value="option" v-model="devices"></v-checkbox>
+            <v-checkbox @change='changeStores()' class='form-section__checkbox' v-for="(option, index) in devicesList" :key="index" :label='option' :value="option" v-model="devices"></v-checkbox>
         </div>
        
         <div v-if='devices.includes("Tablets") || devices.includes("Phones")' class='form-section'>
@@ -31,12 +31,36 @@
              <v-checkbox class='form-section__checkbox' v-for="(option, index) in storesList" :key="index" :label='option' :value="option" v-model="stores"></v-checkbox>
         </div>
 
+        <div v-if="productType == 'Generic Blinds App' " class='form-section'>
+            <h4 class='form-section__title'>Requires Ecommerce?</h4>
+             <v-radio-group @change='setEcommerceDate' v-model="ecommerce" row>
+                <v-radio label="Yes" :value="true"></v-radio>
+                <v-radio label="No" :value="false"></v-radio>
+            </v-radio-group>
+        </div>
+
+        <div v-if="productType == 'Generic Blinds App' " class='form-section'>
+            <h4 class='form-section__title'>Libraries to be Included:</h4>
+         </div>
+
+        <div v-if="productType == 'Generic Blinds App'"  class='form-section form-section__sub'>
+            <h4 class='form-section__title'>Taylor Blinds:</h4>
+                <v-checkbox class='' v-model='selectAllTaylor' @change='selectAllTaylorOptions' label='All'></v-checkbox>
+                <v-checkbox @change='checkAllTaylor(selectedTaylorBlinds.length)' class='form-section__checkbox' v-for="(option, index) in TaylorBlinds" :key="index" :label='option' :value="option" v-model="selectedTaylorBlinds"></v-checkbox>
+        </div>
+
+        <div v-if="productType == 'Generic Blinds App'"  class='form-section form-section__sub'>
+            <h4 class='form-section__title'>Luxaflex:</h4> 
+                <v-checkbox class='' v-model='selectAllLuxaflex' @change='selectAllLuxaflexOptions' label='All'></v-checkbox>
+                <v-checkbox @change='checkAllLuxaflex(selectedLuxaflex.length)' class='form-section__checkbox' v-for="(option, index) in Luxaflex" :key="index" :label='option' :value="option" v-model="selectedLuxaflex"></v-checkbox>
+        </div>
+
         <div class='form-section'>
             <h4 class='form-section__title'>Document generated is:</h4>
             <v-select :items="selectedGeneratedDocs" label="Generated Document" v-model='generatedDoc'></v-select>
         </div>
        
-        <div v-if="productType == 'MyQuote'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App'" class='form-section'>
             <h4 class='form-section__title'>Multiple Pricelists?</h4>
              <v-radio-group @change='setMultiPricelistDate' v-model="multiPricelist" row>
                 <v-radio label="Yes" :value="true"></v-radio>
@@ -65,7 +89,7 @@
               <v-icon  @click='deleteFile( doc )' small style="color:red;">delete</v-icon>
             </div>
         </div>
-        <div v-if="productType == 'MyQuote'" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App'" class='form-section'>
             <h4 class='form-section__title'>Do you have set statuses?</h4>
              <v-radio-group @change='ChangeSetStatusDate' v-model="setStatus" row>
                 <v-radio label="Yes" :value="true"></v-radio>
@@ -95,7 +119,7 @@
         </div>
 
 
-        <div v-if="productType == 'MyQuote' && usedBy.includes('Reps')" class='form-section'>
+        <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' && usedBy.includes('Reps')" class='form-section'>
             <h4 class='form-section__title'>List of Reps</h4>
             <input style="display:none;" type="file" v-on:change="onFileSelected($event, 'Rep Files')" ref="onListofRepsSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofRepsSelected.click()">Upload List of Reps</button>
@@ -115,13 +139,13 @@
             </div>
         </div>
 
-        <div v-if="productType == 'MyQuote' && usedBy.includes('Customers')" class='form-section'>
+        <div v-if="productType == 'MyQuote'|| productType == 'Generic Blinds App' && usedBy.includes('Customers')" class='form-section'>
             <h4 class='form-section__title'>List of Customers</h4>
             <input style="display:none;" type="file" v-on:change="onFileSelected($event, 'Customer Files')" ref="onListofCustomersSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofCustomersSelected.click()">Upload List of Customers</button>
         </div>
-        
-        <div v-if="projectDetailsData.existingCustomerFiles.length" class='form-section form-section__sub'>
+     
+        <div class='form-section form-section__sub'>
             <h4 v-if='customersSelected' class='form-section__title'>Selected List of Customers</h4>
             <div v-for="(file, key) in files" :key="key" class="file-listing" v-if='files[key].header == "Customer Files"'>{{file.name}}
                 <v-icon @click='removeFile( key )' small style="color:red;">delete</v-icon>
@@ -129,7 +153,7 @@
         </div>
 
         <div v-if='formMode === "edit" && projectDetailsData.existingCustomerFiles.length' class='form-section form-section__sub'>
-            <h4 v-if='projectDetailsData.existingCustomerFiles.length' class='form-section__title'>Existing Customer Files</h4>
+            <h4 class='form-section__title'>Existing Customer Files</h4>
              <div v-for='doc in projectDetailsData.existingCustomerFiles' :key='doc.id' class="file-listing">
                 {{doc.filename}}
               <v-icon @click='deleteFile( doc )' small style="color:red;">delete</v-icon>
@@ -220,11 +244,20 @@ export default {
         statusSelected: false,
         pricelistSelected: false,
         customersSelected: false,
+        customerFileSelected: false,
+        selectAllTaylor: false,
+        selectAllLuxaflex: false,
+        TaylorBlinds:  ['Woven blinds','Vertical blinds','Roller blinds','Shutters'],
+        Luxaflex:      ['Roller blinds','Fabric blinds','Vertical blinds'],
         usedByList: ['Public', 'Reps', 'Customers'],
         devicesList: ['Desktop', 'Tablets', 'Phones'],
         storesList: ['iTunes', 'Google Play'],
         generatedDocs: ['Estimate', 'Quote', 'Credit Note', 'Specification'],
         dialog:false,
+        ecommerceDate:              this.projectDetailsData.ecommerceDate,
+        ecommerce:                  this.projectDetailsData.ecommerce,
+        selectedTaylorBlinds:       this.projectDetailsData.taylorBlinds,
+        selectedLuxaflex:           this.projectDetailsData.luxaflex,
         usedBy:                     this.projectDetailsData.usedBy,
         devices:                    this.projectDetailsData.devices,
         stores:                     this.projectDetailsData.stores,
@@ -246,6 +279,9 @@ export default {
     }
   },
   computed:{
+      ...mapGetters([
+            'user'
+        ]),
       productType(){
          return this.$store.getters.loadedProject(this.projectID).productType;
       },
@@ -261,6 +297,43 @@ export default {
       
   },
   methods: {
+      changeStores(){
+          if(!this.devices.length){
+              this.stores = [];
+          }
+      },
+       checkAllLuxaflex(length){
+          if(length === this.Luxaflex.length){
+              this.selectAllLuxaflex = true
+          }else{
+              this.selectAllLuxaflex =  false;
+          }
+          
+      },
+        selectAllLuxaflexOptions(){
+            this.selectedLuxaflex = [];
+            if(this.selectAllLuxaflex){
+                for(let item in this.Luxaflex){
+                    this.selectedLuxaflex.push(this.Luxaflex[item])
+                }
+            }
+        },
+      checkAllTaylor(length){
+          if(length === this.TaylorBlinds.length){
+              this.selectAllTaylor = true
+          }else{
+              this.selectAllTaylor =  false;
+          }
+          
+      },
+        selectAllTaylorOptions(){
+            this.selectedTaylorBlinds = [];
+            if(this.selectAllTaylor){
+                for(let item in this.TaylorBlinds){
+                    this.selectedTaylorBlinds.push(this.TaylorBlinds[item])
+                }
+            }
+        },
      deleteFile(doc){
             this.$store.dispatch('deleteDocument', doc.id)
         },
@@ -322,6 +395,16 @@ export default {
             this.quoteRequestEmail = '';
             this.quoteRequestRegion = '';
         },
+        setRepDate() {
+            if(this.usedBy.includes('Reps')){
+                this.setRepsDate = moment().format();
+            }else{
+                this.setRepsDate = '';
+            }
+        },
+        setEcommerceDate(){
+            this.ecommerceDate = moment().format();
+        },
         setMultiPricelistDate(){
             this.multiPricelistDate = moment().format();
         },
@@ -345,7 +428,6 @@ export default {
             }
             for( var i = 0; i < files.length; i++ ){
                 files[i].header = header;
-                this.setRepsDate = moment().format();
                 this.files.push( files[i] );
             }
         },
@@ -370,11 +452,16 @@ export default {
         }, 
         onSubmit(){
             let payload = {
+                userID:                     this.user.id,
                 specID:                     this.projectDetailsData.specID,
                 projectID:                  this.projectID,
                 usedBy:                     this.usedBy,
                 devices:                    this.devices,
                 stores:                     this.stores,
+                ecommerceDate:              this.ecommerceDate,
+                ecommerce:                  this.ecommerce,
+                taylorBlinds:               this.selectedTaylorBlinds,
+                luxaflex:                   this.selectedLuxaflex,
                 generatedDoc:               this.generatedDoc,
                 multiPricelist:             this.multiPricelist,
                 multiPricelistDate:         this.multiPricelistDate,

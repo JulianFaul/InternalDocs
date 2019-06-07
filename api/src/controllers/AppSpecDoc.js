@@ -3,6 +3,7 @@ var fs = require('fs');
 var async = require('async');
 
 exports.index = (req, res) => {
+    console.log("GETTING DOX")
     const detailsID = req.params.detailsID;
     AppSpecDoc.find({detailsID : detailsID}, (err, documents) => {
         if(err){
@@ -30,12 +31,24 @@ exports.create = (req,res) => {
         let file = req.files[index];
         let header = req.body.header[index];
         let relPath = file.path.replace(remove, '')
-        let newAppSpecDoc = new AppSpecDoc(req.body);
-            newAppSpecDoc.documentName = req.files[index].originalname
-            newAppSpecDoc.header = header;
-            newAppSpecDoc.path = relPath.replace(/\\/g, '/')
-            newAppSpecDoc.document_name = file.originalname
+        // let newAppSpecDoc = new AppSpecDoc(req.body);
+        //     newAppSpecDoc.documentName = req.files[index].originalname
+        //     newAppSpecDoc.header = header;
+        //     newAppSpecDoc.path = relPath.replace(/\\/g, '/')
+        //     newAppSpecDoc.document_name = file.originalname
+            let newAppSpecDoc = new AppSpecDoc({
+                projectID: req.body.projectID,
+                historyAuthor:req.body.userID,
+                specID:req.body.specID,
+                documentName:req.files[index].originalname ,
+                header:header  ,
+                path: relPath.replace(/\\/g, '/')
+            });
+            
+
+
             newAppSpecDoc.save().then((response) => {
+                console.log(response)
                 docs.push(response)
                 cb()
             })
@@ -95,3 +108,18 @@ exports.destroyAll = (req, res) => {
         })
     })
 }
+
+
+exports.update = (req, res) => {
+    
+    AppSpecDoc.findById(req.params.docID)
+    .then((doc) => {
+        doc.documentName = req.file.originalname
+        doc.save()
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+
+
+    }

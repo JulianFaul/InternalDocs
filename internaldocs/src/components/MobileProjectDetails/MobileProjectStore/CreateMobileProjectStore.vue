@@ -95,7 +95,6 @@ export default {
         formMode: 'create',
         deviceList: ['Desktop', 'Tablets', 'Phones'],
         appTypes: ["Android", "IOS"],
-
         appType: "Android",
         nameOnStore:    "",
         devices:        [],

@@ -1,17 +1,17 @@
 <template>
-    <div>
-        <div class='content-container'>
-            <div class='title-container'>
-               <h1 class='title-container__title'>
-                     <router-link :to="'/details/' + id">
-                    <v-icon style='vertical-align: middle;'>keyboard_backspace</v-icon>
-                </router-link>Create New Stat Info</h1>
-                 <button type="submit" @click='onSubmit' class=" button button__blue">{{buttonText}}</button>
-            </div>
-        </div>
-        <div class='scroll-container'>
-            <div class='content-container'>
-                <div class='form' v-on:submit.prevent>
+        <v-dialog v-model="dialog" scrollable max-width="1200px">
+        <template v-slot:activator="{ on }">
+            <button style='float:right' class='button button__blue' v-on="on">Create New Info</button>
+        </template>
+        <v-card pa2>
+            <v-card-title>Meeting Note
+            <button class='button button__green' flat @click="onSubmit">Save</button>
+                <v-spacer></v-spacer>
+                <v-icon flat @click="dialog = false">close</v-icon>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+               <div class='form' v-on:submit.prevent>
                     <div class='form-section form-section__inline'>
                         <div>
                             <h4 class='form-section__title'>Note Title:</h4>
@@ -26,29 +26,35 @@
                             <datepicker style='margin:0px;' name='datePublished' id='datePublished' placeholder='Please select a date' class='form-section__datepicker' :format="customFormatter" :value="date" v-model='date'></datepicker>
                         </div>
                     </div> 
-                    <v-textarea rows="10" name="Note" label="Note" v-model='note'></v-textarea>
+                    <vue-editor v-model="note"></vue-editor>
                 </div>
-            </div>
-        </div>
-    </div>
+            </v-card-text>
+            <v-divider></v-divider>
+        
+        </v-card>
+        </v-dialog>
 </template>
 
 <script>
-
+import { VueEditor } from "vue2-editor";
 import {VIcon} from "vuetify/lib";
 import Datepicker from 'vuejs-datepicker';
 import moment from 'moment';
 export default {
   name: 'CreateMobileProjectsStatInfo',
-  props: ["id"],
+  props: ["projectID"],
   components:{
       VIcon,
-      Datepicker
+      Datepicker,
+      VueEditor
   },
   data () {
     return {
+      
+        dialog: false,
         buttonText: 'Create Meeting Note',
         formMode: 'create',
+            note: '',
             creatorName: '',
             date: new Date(),
             note: '',
@@ -63,15 +69,16 @@ export default {
             return moment(date).format('dddd, MMMM Do YYYY');
         },
         onSubmit() {
-    
         this.$store.dispatch("createMeetingNote", {
-            projectID: this.id,
+            projectID: this.projectID,
             creatorName: this.creatorName,
             date: this.date,
-            note: this.note
-        })
+            note: this.note,
+            title: this.title
+        });
+        this.dialog = false;
         // this.$store.dispatch("createStatInfo", {projectID: this.id, data: payload})
-        this.$router.go(-1)
+        // this.$router.go(-1)
     }
   }
 }

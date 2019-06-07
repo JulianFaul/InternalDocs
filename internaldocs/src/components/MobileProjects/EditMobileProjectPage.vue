@@ -12,7 +12,7 @@
                
             </div>
         </div>
-      
+
         <div class='scroll-container'>
             <div class='content-container'>
                 <loadingPage v-if='loading'></loadingPage>
@@ -159,12 +159,14 @@ export default {
     },
     computed:{
         ...mapGetters([
+            'user',
             'loadedAppSpecs',
             'loading'
         ]),
     },
     methods: {
          onCheckboxChange(){
+           
             this.editLiveDate = this.editAppLive === true ? this.editLiveDate : null;
             this.editDemoDate = this.editAppDemo === true ? this.editDemoDate : null;
             this.editStagingDate = this.editAppStaging === true ? this.editStagingDate : null;
@@ -184,6 +186,7 @@ export default {
         },
         onSubmit() {
             this.$store.dispatch("updateMobileProject", {
+                userID: this.user.id,
                 projectID: this.projectID,
                 appTitle: this.editAppTitle,
                 appSubtitle: this.editAppSubtitle,
@@ -208,6 +211,7 @@ export default {
                 develLink: this.editDevelLink,
                 icon: this.editIcon,
             });
+
             this.$router.push('/mobileprojects')
         }
     },

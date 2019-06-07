@@ -1,13 +1,13 @@
 <template>
   <v-app id="app">
     <snackbar></snackbar>
-    <TopNav></TopNav>
+    <TopNav app></TopNav>
      <v-content>
       <v-container fluid>
         <router-view></router-view>
       </v-container>
     </v-content>
-    <Footer></Footer>
+    <Footer app></Footer>
   </v-app>
 </template>
 

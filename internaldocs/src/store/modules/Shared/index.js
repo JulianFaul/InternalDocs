@@ -28,6 +28,9 @@ export default {
       }
     },
     actions: {
+      setSnack({commit}, payload){
+        commit("snackbar", payload)
+      },
       clearSnack({commit}, payload){
         commit("clearsnack")
       },

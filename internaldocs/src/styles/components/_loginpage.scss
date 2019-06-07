@@ -1,0 +1,24 @@
+.loginpage{
+    position:fixed; width:100vw; height:100vh;padding: 0px;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0px;
+    background-size: cover;
+    background-image: url('../assets/NDTec-quote-management-app.jpg');
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.loginpage-card{
+    margin-top:-200px;
+}
+
+.loginpage-toolbar__blue{
+    background-color: $ndtec-blue !important;
+}
+
+.loginpage-button__blue{
+    background-color: $ndtec-blue !important;
+}

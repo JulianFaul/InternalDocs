@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-snackbar
+      :color="snackbarthing.color"
       v-model="snackbarthing.show"
       :bottom="y === 'bottom'"
       :left="x === 'left'"
@@ -30,7 +31,7 @@ import { mapGetters } from 'vuex';
         y: 'top',
         x: null,
         mode: '',
-        timeout: 3000,
+        timeout: 3000
       }
     },
     methods: {

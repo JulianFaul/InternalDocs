@@ -2,7 +2,7 @@
   <div class='content-container'>
     <div class='main-dashboard'>
       <div class='title-container'>
-        <h1 class='title-container__title'>Welcome to the Central Hub</h1>
+        <h1 class='title-container__title'>Welcome {{user.userName}} to the Central Hub</h1>
       </div>
       <div class='main-dashboard__items'>
         <router-link class='main-dashboard__item' to='/admin'>Admin</router-link>
@@ -19,7 +19,12 @@ export default {
   data () {
     return {
     }
-  }
+  },
+   computed: {
+    user () {
+      return this.$store.getters.user
+    }
+  },
 }
 </script>
 

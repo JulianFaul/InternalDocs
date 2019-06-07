@@ -1,14 +1,23 @@
 const ProjectSpec = require('../models/MobileProjectSpecs.model.js');
 
 exports.index = (req, res) => {
+ 
     ProjectSpec.findOne({projectID: req.params.id})
-    .populate('appspecdocs')
-    .exec((err, details) => {
-        if(err){
-            res.send(err)
-        }
+    .then((details) => {
         res.send(details)
     })
+    .catch((err) => {
+        console.log(err)
+    })
+    // .populate('appspecdocs')
+  
+    // .exec((err, details) => {
+    //     if(err){
+    //         res.send(err)
+    //     }
+    //     res.send(details)
+    //     console.log(details)
+    // })
 }
 
 exports.create = (req, res) => {
@@ -36,6 +45,8 @@ exports.update = (req, res) => {
             spec.usedBy = req.body.usedBy,
             spec.devices =req.body.devices,
             spec.stores = req.body.stores,
+            spec.luxaflex = req.body.luxaflex,
+            spec.taylorBlinds = req.body.taylorBlinds,
             spec.generatedDoc = req.body.generatedDoc,
             spec.multiPricelist = req.body.multiPricelist,
             spec.multiPricelistDate = req.body.multiPricelistDate,

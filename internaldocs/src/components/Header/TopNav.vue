@@ -49,6 +49,21 @@
             <v-list-tile-title v-text="devPage.text"></v-list-tile-title>
         </v-list-tile>
       </v-list-group>
+      
+      <v-list-tile to="/settings">
+        <v-list-tile-action >
+          <v-icon>settings</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Settings</v-list-tile-title>
+      </v-list-tile>
+
+      <v-list-tile @click='logUserOut()'>
+        <v-list-tile-action >
+          <v-icon>logout</v-icon>
+        </v-list-tile-action>
+        <v-list-tile-title>Logout</v-list-tile-title>
+      </v-list-tile>
+
     </v-list>
   </v-navigation-drawer>
 
@@ -90,6 +105,14 @@ export default {
         {text:"Apple Connect", url: "/appleconnect"},
         {text:"Google Play Dev Console", url: "/googleplaydev"},
       ]
+    }
+  },
+ 
+  methods: {
+    logUserOut(){
+      this.$store.dispatch('logUserOut');
+      this.$router.push('/login')
+      this.drawer = false;
     }
   }
 }

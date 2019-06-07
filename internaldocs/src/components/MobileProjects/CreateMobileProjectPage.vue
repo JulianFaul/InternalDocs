@@ -113,7 +113,7 @@ export default {
             appVersions: ["Spine","Classic"],
             countries: ["South Africa","Australia"],
             appTypes: ["NDTec App","iTunes/Google Play App","Web Only"],
-            productTypes: ["MySpec","MyQuote","MyOrder","Project Module","ERP","Portal"],
+            productTypes: ["MySpec","MyQuote","Generic Blinds App", "MyOrder","Project Module","ERP","Portal"],
             priorities: ['Critical', 'Serious', 'Moderate', 'Low Priority', 'none'],
             milestones: ['Not Started', 'Checklist Meeting', 'Mockup Presented', 'Sign Off Mockup', 'Deliver V1', 'Deliver V2', 'Final Sign Off', 'Completed'],
             appStatuses: ['Client Using App', 'Waiting for Client', 'Client Reviewing on Demo', 'Client Reviewing on Staging', 'In Progress', 'Update in Progress', 'Not Started', 'Cancelled', 'Not Paid'],

@@ -8,6 +8,8 @@ import MobileProjectInfo from './modules/MobileProjectInfo'
 import MobileProjectStoreInfo from './modules/MobileProjectStoreInfo'
 import MobileProjectMeetingNotes from './modules/MobileProjectMeetingNotes'
 
+import User from './modules/User'
+
 import InternalDocuments from './modules/InternalDocuments'
 import Shared from './modules/Shared'
 
@@ -17,6 +19,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
+    User,
     MobileProjects,
     MobileProjectSpecs,
     MobileProjectInfo,

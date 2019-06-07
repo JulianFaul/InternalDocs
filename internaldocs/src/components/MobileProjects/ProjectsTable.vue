@@ -4,6 +4,8 @@
     <az-filter :projects='projects' v-on:selected="selectedAlphabeticalFilterOption"></az-filter>
   </div>
     <v-data-table
+ 
+     :pagination.sync="pagination"
         :headers="headers"
         :items="projects"
         class="elevation-1 v-data-table"
@@ -92,7 +94,9 @@ export default {
       azFilter
   },
   data: () => ({
-   
+    pagination: {
+    rowsPerPage: -1
+    },
      alphabeticalFilterOption: "",
       headers: [
         { text: '' ,align: 'center', value: '', sortable: false, width:"20px"},

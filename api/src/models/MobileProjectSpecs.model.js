@@ -20,22 +20,28 @@ const MobileProjectSpecsSchema = new Schema({
   maintenanceContactEmail: String,
   quoteRequestDetails: Array,
   contactMeDetails: Array,
+  luxaflex: Array,
+  taylorBlinds: Array,
+  ecommerceDate:String,
+  ecommerce:String,
   specialComments:String,
   dueDate: String,
   createdAt: {
     type: Date,
     default: Date.new
   }
-},{
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
 });
 
-MobileProjectSpecsSchema.virtual('appspecdocs', {
-  ref: 'appspecdocs',
-  localField: '_id',
-  foreignField: 'specID'
-})
+// ,{
+//   toJSON: { virtuals: true },
+//   toObject: { virtuals: true },
+// });
+
+// MobileProjectSpecsSchema.virtual('appspecdocs', {
+//   ref: 'appspecdocs',
+//   localField: '_id',
+//   foreignField: 'specID'
+// })
 
 module.exports = mongoose.model('MobileProjectSpecs', MobileProjectSpecsSchema)
 

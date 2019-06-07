@@ -44,76 +44,32 @@ export default {
             commit('setLoading', false);
         })
   },
-  updateMobileProject({commit}, payload){
+  updateMobileProject({commit, dispatch}, payload){
     commit('setLoading', true);
     let mobileProject = new FormData();
-    if(payload.icon){
         mobileProject.append('file',payload.icon);
-    }
-    if(payload.appTitle){
         mobileProject.append('appTitle',payload.appTitle);
-    }
-    if(payload.appSubtitle){
         mobileProject.append('appSubtitle',payload.appSubtitle);
-    }
-    if(payload.appVersion){
         mobileProject.append('appVersion',payload.appVersion);
-    }
-    if(payload.country){
         mobileProject.append('country',payload.country);
-    }
-    if(payload.appType){
         mobileProject.append('appType',payload.appType);
-    }
-    if(payload.priority){
         mobileProject.append('priority',payload.priority);
-    }
-    if(payload.productType){
         mobileProject.append('productType',payload.productType);
-    }
-    if(payload.appLive){
         mobileProject.append('appLive',payload.appLive);
-    }
-    if(payload.appDemo){
         mobileProject.append('appDemo',payload.appDemo);
-    }
-    if(payload.appStaging){
         mobileProject.append('appStaging',payload.appStaging);
-    }
-    if(payload.appDevel){
         mobileProject.append('appDevel',payload.appDevel);
-    }
-    if(payload.liveDate){
         mobileProject.append('liveDate',payload.liveDate);
-    }
-    if(payload.demoDate){
         mobileProject.append('demoDate',payload.demoDate);
-    }
-    if(payload.stagingDate){
         mobileProject.append('stagingDate',payload.stagingDate);
-    }
-    if(payload.develDate){
         mobileProject.append('develDate',payload.develDate);
-    }
-    if(payload.milestone){
         mobileProject.append('milestone',payload.milestone);
-    }
-    if(payload.appStatus){
         mobileProject.append('appStatus',payload.appStatus);
-    }
-    if(payload.liveLink){
         mobileProject.append('liveLink',payload.liveLink);
-    }
-    if(payload.demoLink){
         mobileProject.append('demoLink',payload.demoLink);
-    }
-    if(payload.stagingLink){
         mobileProject.append('stagingLink',payload.stagingLink);
-    }
-    if(payload.develLink){
         mobileProject.append('develLink',payload.develLink);
-    }
-      
+
     axios.put(apiEndpoint + 'mobileProjects/' + payload.projectID, mobileProject)
     .then((response) => {
         commit('updateMobileProject', {
@@ -126,6 +82,7 @@ export default {
             
         })
         commit('snackbar',{show: true, message: 'Project Updated'});
+        dispatch('getMobileProjects');
         commit('setLoading', false);
 
     })
@@ -199,6 +156,10 @@ deleteMobileProject({commit, dispatch}, projectID){
             console.log(err)
         })
         // ---------------------------
+        axios.delete(apiEndpoint + 'mobileProjects/' + projectID + '/meetingNote')
+        .catch((err) => {
+            console.log(err)
+        })
         
     })
     .then(() => {

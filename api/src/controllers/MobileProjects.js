@@ -62,6 +62,7 @@ exports.update = (req,res) => {
             if(req.body.appStaging){
                 doc.appStaging= req.body.appStaging
             }
+         
             if(req.body.appStatus){
                 doc.appStatus= req.body.appStatus
             }

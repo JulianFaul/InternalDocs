@@ -16,7 +16,8 @@ getMeetingNotes({commit}, projectID){
                     projectID:      data[key].projectID,
                     creatorName:    data[key].creatorName,
                     date:           data[key].date,
-                    note:           data[key].note
+                    note:           data[key].note,
+                    title:          data[key].title
                 })
             }
             commit('setMeetingNotes',meetingNotes);
@@ -28,6 +29,7 @@ getMeetingNotes({commit}, projectID){
         })
 },
 createMeetingNote({commit, dispatch}, payload){
+
     commit('setLoading', true);
     axios.post(apiEndpoint + 'mobileProjects/'+ payload.projectID + '/meetingNote', payload)
         .then((response) => {
@@ -36,7 +38,8 @@ createMeetingNote({commit, dispatch}, payload){
                 projectID:      payload.projectID,
                 creatorName:    payload.creatorName,
                 date:           payload.date,
-                note:           payload.note
+                note:           payload.note,
+                title:          payload.title
             }
             commit('createMeetingNote', note);
             commit('snackbar',{show: true, message: 'Meeting Note Created'});
@@ -48,10 +51,44 @@ createMeetingNote({commit, dispatch}, payload){
             commit('setLoading', false);
         })
   },
-  deleteMeetingNote({commit}, payload){
-    // commit('setLoading', true);
+
+  updateMeetingNote({commit}, payload){
+    commit('setLoading', true);
     let projectID = payload.projectID;
     let meetingID = payload.meetingID;
-    console.log("delete")
+    let updateOBJ = {
+        creatorName: payload.creatorName,
+        date: payload.date,
+        note: payload.note,
+        title: payload.title
+    }
+    axios.put(apiEndpoint + 'mobileProjects/'+ projectID + '/meetingNote/' + meetingID, updateOBJ)
+    .then((response) => {
+        commit('updateMeeting', {
+            id: response.data._id,
+            ...payload,
+        });
+        commit('setLoading', false);
+    })
+    .catch((err) => {
+        commit('setLoading', false);
+        console.log(err)
+    })
+  },
+
+
+  deleteMeetingNote({commit}, payload){
+    commit('setLoading', true);
+    let projectID = payload.projectID;
+    let meetingID = payload.meetingID;
+    axios.delete(apiEndpoint + 'mobileProjects/'+ projectID + '/meetingNote/' + meetingID)
+    .then((response) => {
+        commit('deleteMeetingNote', meetingID);
+        commit('setLoading', false);
+    })
+    .catch((err) => {
+        commit('setLoading', false);
+        console.log(err)
+    })
   }
 }
