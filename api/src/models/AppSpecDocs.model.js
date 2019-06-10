@@ -27,6 +27,16 @@ const AppSpecDocSchema = mongoose.Schema({
     type: Date,
     default: Date.now
   }
+}
+,{
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+});
+
+AppSpecDocSchema.virtual('AppSpecDocHistory', {
+  ref: 'AppSpecDocHistory',
+  localField: '_id',
+  foreignField: 'docID'
 })
 
 module.exports = mongoose.model('appspecdocs', AppSpecDocSchema)

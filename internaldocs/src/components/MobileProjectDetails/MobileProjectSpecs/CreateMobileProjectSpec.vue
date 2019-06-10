@@ -451,6 +451,7 @@ export default {
         onSubmit(){
             let payload = {
                 userID:                     this.user.id,
+                userName:                   this.user.userName,
                 projectID:                  this.projectID,
                 usedBy:                     this.usedBy,
                 devices:                    this.devices,

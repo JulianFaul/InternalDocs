@@ -120,7 +120,7 @@
 
 
         <div v-if="productType == 'MyQuote' || productType == 'Generic Blinds App' && usedBy.includes('Reps')" class='form-section'>
-            <h4 class='form-section__title'>List of Reps</h4>
+            <h4 class='form-section__title'>List of Reps</h4> {{usedBy.includes('Reps')}}
             <input style="display:none;" type="file" v-on:change="onFileSelected($event, 'Rep Files')" ref="onListofRepsSelected">
             <button style="margin:0;" class='button button__green' small dark @click="$refs.onListofRepsSelected.click()">Upload List of Reps</button>
         </div>
@@ -453,6 +453,7 @@ export default {
         onSubmit(){
             let payload = {
                 userID:                     this.user.id,
+                userName:                   this.user.userName,
                 specID:                     this.projectDetailsData.specID,
                 projectID:                  this.projectID,
                 usedBy:                     this.usedBy,

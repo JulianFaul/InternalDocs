@@ -9,3 +9,27 @@
 .document-list__item{
     padding: $xs-size 0;
 }
+
+
+.documents-list__group{
+    margin-bottom: $m-size;
+    margin-top: $l-size;
+    
+ 
+}
+
+.documents-list__header{
+    color: black !important;
+    padding-left:$m-size;
+    font-size: 18px;
+}
+
+.documents-list__item{
+    padding: $m-size 0 0 $m-size;
+    list-style-type: none;
+}
+
+.documents-list__item__sub{
+    padding: 0 0 $m-size 0;
+    list-style-type: none;
+}

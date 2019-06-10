@@ -10,6 +10,7 @@ export default {
     axios.get(apiEndpoint + 'mobileProjects/' + id + '/specfiles')
     .then((response) => {
         let obj = response.data;
+        console.log(obj)
         for(var key in obj){
             appspecdocs.push({
                 id: obj[key]._id,
@@ -19,7 +20,8 @@ export default {
                 path: apiEndpoint + obj[key].path,
                 projectID: obj[key].projectID,
                 specID: obj[key].specID,
-                
+                createdBy: obj[key].createdBy,
+                history: obj[key].AppSpecDocHistory
             })
         }
         return appspecdocs
@@ -78,7 +80,7 @@ export default {
     commit('setLoading', true); 
     const projectID = payload.projectID;
     let specDetails = {}
-        specDetails.userID                  = payload.userID
+       
         specDetails.usedBy                  = payload.usedBy
         specDetails.devices                 = payload.devices
         specDetails.stores                  = payload.stores
@@ -119,6 +121,9 @@ export default {
             }
             formData.append('projectID', projectID);
             formData.append('specID', key);
+            formData.append('userID', payload.userID);
+            formData.append('userName', payload.userName);
+
          axios.post(apiEndpoint + 'mobileProjects/' + projectID + '/specfiles', formData)
          .then((files) => {
              console.log(files.data)
@@ -202,7 +207,8 @@ export default {
             }
             formData.append('projectID', projectID);
             formData.append('specID', key);
-            formData.append('userID',payload.userID)
+            formData.append('userID',payload.userID);
+            formData.append('userName', payload.userName);
          axios.post(apiEndpoint + 'mobileProjects/' + projectID + '/specfiles', formData)
          .then((files) => {
             const obj = files.data;
@@ -217,6 +223,7 @@ export default {
                     specID: obj[key].specID,             
                 })
             }
+            dispatch('getAppSpecs', projectID)
         })
         .catch((err) => {
             console.log(err)
@@ -238,7 +245,7 @@ export default {
     })
   },
 
-  deleteDocument({commit}, docID){
+  deleteDocument({commit,dispatch}, docID){
     commit('setLoading', true);
         axios.delete(apiEndpoint + 'specfiles/' + docID)
         .then((response) => {
@@ -251,18 +258,18 @@ export default {
         })
   },
 
-  updateSpecDocument({commit}, payload){
+  updateSpecDocument({commit, dispatch}, payload){
       let formData = new FormData();
       formData.append('file', payload.specDoc);
       formData.append('userID',payload.userID);
+      formData.append('userName', payload.userName);
       axios.put(apiEndpoint + 'specfiles/' + payload.specDocID, formData)
       .then((response) => {
-          console.log(response)
+        dispatch('getAppSpecs', payload.projectID)
       })
       .catch((err) => {
           console.log(err)
       })
-    //   /specfiles/:docID
   }
 
 

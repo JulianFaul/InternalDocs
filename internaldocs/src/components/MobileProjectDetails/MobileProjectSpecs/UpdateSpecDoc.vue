@@ -31,7 +31,8 @@
 import { mapGetters } from 'vuex';
 export default {
     props:[
-        'specDocID'
+        'specDocID',
+        'projectID'
     ],
     data(){
         return{
@@ -50,8 +51,8 @@ export default {
              this.specDocument = file;
         },
         updateFile(){
-            
-            this.$store.dispatch('updateSpecDocument',{userID: this.user.id, specDocID: this.specDocID, specDoc: this.specDocument})
+            this.$store.dispatch('updateSpecDocument',{projectID:this.projectID, userID: this.user.id, userName: this.user.userName, specDocID: this.specDocID, specDoc: this.specDocument});
+            this.dialog = false;
         },
     }
 }

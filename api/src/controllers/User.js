@@ -6,7 +6,6 @@ const mongoose = require('mongoose');
 exports.index = (req, res) => {
     User.find({})
     .populate('__histories')
-  
     .exec((err, details) => {
         if(err){
             res.send(err)

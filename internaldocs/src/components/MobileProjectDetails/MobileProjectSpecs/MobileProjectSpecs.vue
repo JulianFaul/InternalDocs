@@ -222,21 +222,29 @@
             <v-spacer></v-spacer>
         </v-list-tile>
 
-        <v-list v-if="isEmpty" class="document-list__group" v-for="(document_group,group_name,index) in groupedDocuments" :key="index">
-           <v-subheader class="document-list__header"><h3>{{group_name}}</h3></v-subheader>
-                <v-divider :key="index"></v-divider>
-            <v-list-tile class="document-list__item" v-for="doc in groupedDocuments[group_name]" :key="doc.id">
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="doc.filename"></v-list-tile-title>
-                  <v-list-tile-sub-title >Uploaded: {{doc.createdAt}}</v-list-tile-sub-title>
-                </v-list-tile-content>
-                <v-spacer></v-spacer>
-                  <v-icon @click='downloadFile(doc.path, doc.filename)'  class="button">vertical_align_bottom</v-icon> 
-                  <UpdateSpecDoc :specDocID='doc.id'></UpdateSpecDoc>
-                  <!-- <button @click='updateFile(doc.id)' class="button button__blue">Update</button>  -->
-                  <v-icon @click='deleteFile(doc)' class="button button__red-text">delete</v-icon> 
-          </v-list-tile>
-      </v-list>
+
+
+<div v-if="isEmpty" class="documents-list__group" v-for="(document_group,group_name,index) in groupedDocuments" :key="index">
+    <h3 class="documents-list__header">{{group_name}}</h3>
+    <v-divider></v-divider>
+    <ul class="documents-list__item" v-for="doc in groupedDocuments[group_name]" :key="doc.id"> 
+        <li>
+        <div style='display: inline-block;'>
+            <v-list-tile-title v-html="doc.filename"></v-list-tile-title>
+            <v-list-tile-sub-title v-if='doc.history'>{{doc.history[0].changeType}} by {{doc.history[0].userName}} - {{formatedDate(doc.history[0].createdAt)}}</v-list-tile-sub-title >
+        </div>
+        <div style='float:right;display:inline-flex;'>
+            <v-icon @click='downloadFile(doc.path, doc.filename)'  class="button">vertical_align_bottom</v-icon> 
+            <UpdateSpecDoc :projectID='projectID' :specDocID='doc.id'></UpdateSpecDoc>
+            <v-icon @click='deleteFile(doc)' class="button button__red-text">delete</v-icon> 
+        </div>
+            <ul v-if='doc.history'  class="documents-list__item__sub"> 
+                <v-list-tile-sub-title  v-for='history in doc.history.slice(1)' :key='history._id' >{{history.changeType}} by {{history.userName}} - {{formatedDate(history.createdAt)}}</v-list-tile-sub-title>
+            </ul>
+        </li>
+    </ul>
+</div>
+
     </v-list>
 </div>
     
@@ -336,7 +344,7 @@ export default {
               Object.keys(groupedDocuments).sort().forEach((key) => {
                   orderedGroupedDocuments[key] = groupedDocuments[key];
               });
-              
+              console.log(orderedGroupedDocuments)
           return orderedGroupedDocuments
         },
      ...mapGetters([
